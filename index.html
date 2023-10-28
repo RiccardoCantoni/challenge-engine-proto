@@ -3,55 +3,46 @@
   <head>
     <link rel="stylesheet" href="style.css">
     <style type="text/css" media="screen"></style>
-    <script src="ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://pixijs.download/release/pixi.min.js"></script>
-    <script src="page.js"></script>
-    <script src="engine.js"></script>
-    <script src="util.js"></script>
-    <script src="pixi.js"></script>
   </head>
-  <body class="neutral" onload="onLoad()" style="width: 100vw; height: 100vh; margin: 0; display: flex; flex-direction: row; overflow: hidden;">
-    <!-- The Modal -->
-    <div id="modalScreen" class="modalScreen">
-      <div class="container">
-        Good Job! you have completed this challenge.</br>
-        You can submit your solution, or you can</br>
-        continue working on it and improve your code before submitting</br>
-        </br>
-        PS: While reworks are definitelly allowed,</br>
-        please submit only when you're satisfied with your solution.</br>
-        Thank you!
-        </br>
-        </br>
-        <div style="display: flex; flex-direction:row; justify-content: flex-end;">
-          <button class="button" id="buttonHome" onclick="onHome()">Home</button>
-          <button class="button" id="buttonReset" onclick="onReset()">Reset</button>
-          <button class="button" id="buttonSubmit" onclick="onSubmit()">Submit</button>
+  <body class="neutral">
+    <div class="header">
+      ><u>notabusinesscase.io</u><
+    </div>
+    <div class="flexRow neutral" style="width: 100vw; margin: 0; overflow: scroll; text-align: center;">
+    <div style="width: 20%;"></div>
+      <div class="flexColumn" style="width: 40%;">
+        <div class="container dark" style="margin-top: 52px;">
+          <h2>
+            About this website:
+          </h2>
+          <p>This website is a prototype, and it's still WIP.</p>
+          <p>If it ever gets developed into a real thing it will be a place to host coding challenges for programmers.</p>
+          <p>Unlike most corporate hackatons, <i>this is not a business case</i>. It's actually about programming.</p>
+          <p>Unlike traditional hackatons this website relies on an homemade engine that supports a "game-like" graphical interface, in which 
+            the effects of your code can be seen in real-time.</p>
+          <p>The rules are simple:</br>
+          - The language is Javascript. You are given the <i>update()</i> function to fill in.</br>
+          - <i>update()</i> has one parameter, the <i>state</i>:
+            an object containing everything you need to know about the simulated environment and all the actions that can be performed to affect it.</br>
+          - <i>update()</i> will be called three times a second.</p>
         </div>
-      </div>
-    </div>
-    <!-- editor -->
-    <div style="flex:1; padding: 24px; display:flex; flex-direction: column;">
-      <div id="editor" class="shadow">function update(state) {
-  state.player.move([1,0])
-}</div> 
-    </div>
-    <!-- main -->
-    <div class="flexColumn" style="align-items: center;">
-      <div class="flexRow" style="height: 32px; flex:0; width:100%; justify-content: flex-end; margin-right: 32px; margin-top: 10px;">
-        <button class="buttonLink" id="buttonReset" onclick="onHelp()">Help</button>
-        <button class="buttonLink" id="buttonStep" onclick="onHome()">Home</button>
-      </div>
-      <div style="display:flex; flex:1; align-items:center; justify-content:center; text-align: center;">
-        <div class="flexColumn" style="align-items: end;">
-          <div style="display: flex; flex-direction:row;padding:4px">
-            <button class="button" id="buttonReset" onclick="onReset()">Reset</button>
-            <button class="button" id="buttonStep" onclick="onStep()">One-Step</button>
-            <button class="button" id="buttonRun" onclick="onRun()">Run</button>
+        <div class="container dark">
+          <h2>
+            Challenge 0: Tutorial
+          </h2>
+          <p>This is mostly to get everyone familiarized with the system. The simulated "world" is a 10x10 grid, with the origin on the bottom-left.
+            The <i>state</i> contains two objects:</br> 
+            - <i>target</i>, with an attribute <i>position</i></br>
+            - <i>player</i>, also with a <i>position</i>, but also exposing a <i>move()</i> function.<br>
+            All positions, coordinate, movements, etc.. are expressed as length 2 arrays.
+          </p>
+          <p>Get <i>player</i> to the <i>target.</i></p>
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <button class="button" id="buttonHome" onclick="window.open('/0-tutorial.html','_self')">Start</button>
           </div>
-          <div id="pixi" class="shadow" style="display:flex; height: 400px; width: 400px;"></div>
         </div>
       </div>
+      <div style="width: 20%;"></div>
     </div>
   </body>
 </html>

@@ -1,5 +1,4 @@
 // todorc
-//leave page
 //sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
 // window.onbeforeunload = function() {

@@ -1,21 +1,40 @@
 :root {
   --neutral: #2d2d2d;
   --primary: #6dbf15;
-  --primary-on: #070d01;
+  --primary-on: #202020;
   --primary-container: #2f8006;
   --primary-on-container: #dee8cf;
 }
-
-.neutral {
-  background-color: var(--neutral);
-}
+* { margin: 0; padding: 0 }
 
 #editor { 
   flex: 1;
 }
 
 .body {
+  padding: 0px;
   font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+}
+
+.header {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  height: 38px;
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--primary-on-container);
+  padding-left: 14px;
+  font: 24px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+  pointer-events: none;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
 .button {
@@ -28,6 +47,14 @@
   background-color: var(--primary);
   color: var(--primary-on);
   box-shadow: 0px 2px 4px 0px rgba(22, 23, 20, 0.5);
+}
+
+a.button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  text-decoration: none;
+  text-align: center;
 }
 
 button:disabled,
@@ -83,7 +110,8 @@ button[disabled]{
   background-color: var(--neutral);
   color: var(--primary-on-container);
   text-align: left;
-  padding:14px;
+  margin: 14px;
+  padding:18px;
   border-radius: 8px;
   box-shadow: 0px 2px 4px 0px rgba(22, 23, 20, 0.5);
   font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
@@ -104,4 +132,12 @@ button[disabled]{
   display: flex;
   flex-direction: column;
   flex:1;
+}
+
+.neutral {
+  background-color: var(--neutral);
+}
+
+.dark {
+  background-color: var(--primary-on);
 }
