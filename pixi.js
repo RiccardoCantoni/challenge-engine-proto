@@ -1,6 +1,4 @@
 // todorc
-// modularize getInput()
-// modularize PAGE MGMT
 // disable step while run & vice versa
 // lock editor on run / step
 // editor.setReadOnly(true);  // false to make it editable
@@ -19,6 +17,7 @@ init = false
 hasMoved = false
 setupWorld = () => {
   if (!init) {
+    PAGE_MANAGER.init()
     // Init gm
     GAME_MANAGER.terrain.size = [10,10]
     GAME_MANAGER.terrain.cellSize = 40
@@ -55,13 +54,13 @@ setupWorld = () => {
   const p = new Player()
   p.position = [3,8]
   GAME_MANAGER.wrappers.move = (v) => {
-    if (didEval) {
+    if (PAGE_MANAGER.didEval) {
       const err = validateMovement(v)
       if (err) {
-        didEval = false
+        PAGE_MANAGER.didEval = false
         GAME_MANAGER.time.paused = true
         console.error(err)
-        stop()
+        PAGE_MANAGER.stop()
         return
       }
     }
@@ -102,55 +101,34 @@ onLoad = () => {
   setupWorld()
 }
 
-let didEval = false
-const getUserCode = () => {
-  if (!didEval) {
-    eval(editor.getValue())
-    eval('GAME_MANAGER.wrappers.update = (worldState) => update(worldState)')
-    didEval = true
-  }
-}
-
-
 const onRun = () => {
   hasMoved = false
   GAME_MANAGER.time.paused = !GAME_MANAGER.time.paused
+
   if(GAME_MANAGER.time.paused) {
-    document.getElementById('buttonRun').classList.remove('buttonPressed')
+    PAGE_MANAGER.pause()
   } else {
-    document.getElementById('buttonRun').classList.add('buttonPressed')
+    PAGE_MANAGER.run()
   }
   if (GAME_MANAGER.time.paused) return
-  getUserCode()
+  PAGE_MANAGER.evalCode()
   GAME_MANAGER.time.lastGameTick = GAME_MANAGER.time.elapsed
   GAME_MANAGER.wrappers.update(GAME_MANAGER.worldState)
 }
 
 const onStep = () => {
   hasMoved = false
-  getUserCode()
+  PAGE_MANAGER.evalCode()
   GAME_MANAGER.time.lastGameTick = GAME_MANAGER.time.elapsed
   GAME_MANAGER.time.step = true
 }
 
 const onReset = () => {
-  didEval = false
   hasMoved = false
-  document.getElementById('buttonStep').disabled = false
-  document.getElementById('buttonRun').disabled = false
   GAME_MANAGER.time.paused = true
-  document.getElementById('buttonRun').classList.remove('buttonPressed')
+  PAGE_MANAGER.reset()
   GAME_MANAGER.deInstantiate('player')
   GAME_MANAGER.deInstantiate('flag', false)
   console.clear()
   setupWorld()
-}
-
-const stop = () => {
-  let btn = document.getElementById('buttonRun')
-  btn.classList.remove('buttonPressed')
-  btn.disabled = true
-  btn = document.getElementById('buttonStep')
-  btn.classList.remove('buttonPressed')
-  btn.disabled = true
 }

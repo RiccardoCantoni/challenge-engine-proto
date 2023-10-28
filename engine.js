@@ -9,7 +9,6 @@ const GAME_MANAGER = {
     lastGameTick: undefined,
     tickNumber: 0,
     paused: true,
-    stopped: false,
     step: false
   },
   dynamicObjects: [],
