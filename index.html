@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="style.css">
     <style type="text/css" media="screen"></style>
+    <script src="ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://pixijs.download/release/pixi.min.js"></script>
     <script src="page.js"></script>
     <script src="engine.js"></script>
@@ -10,27 +11,13 @@
     <script src="pixi.js"></script>
   </head>
   <body class="neutral" onload="onLoad()" style="width: 100vw; height: 100vh; margin: 0; display: flex; flex-direction: row; overflow: hidden;">
+    <!-- editor -->
     <div style="flex:1; padding: 24px; display:flex; flex-direction: column;">
-      <!-- editor -->
-      <div id="editor">
-  function update(worldState) {
-    const dv = [
-        worldState.target.position[0] - worldState.player.position[0],
-        worldState.target.position[1] - worldState.player.position[1],
-    ]
-    let mv = [0,0]
-    mv[0] = dv[0]>0 ? 1 : dv[0]<0 ? -1 : 0
-    mv[1] = dv[0] ? 0 : dv[1]>0 ? 1 : dv[1]<0 ? -1 : 0
-    worldState.player.move(mv)
-}
-      </div>
-      <script src="ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-      <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/javascript");
-      </script>
+      <div id="editor" class="shadow">function update(state) {
+  state.player.move([1,0])
+}</div> 
     </div>
+    <!-- main -->
     <div style="display:flex; flex:1; padding:24px; align-items:center; justify-content:center; text-align: center;">
       <div style="display:flex; flex-direction: column; align-items: end;">
         <div style="display: flex; flex-direction:row;padding:4px">
@@ -38,7 +25,7 @@
           <button class="button" id="buttonStep" onclick="onStep()">One-Step</button>
           <button class="button" id="buttonRun" onclick="onRun()">Run</button>
         </div>
-        <div id="pixi" class= "shadow" style="display:flex; height: 400px; width: 400px;"></div>
+        <div id="pixi" class="shadow" style="display:flex; height: 400px; width: 400px;"></div>
       </div>
     </div>
   </body>

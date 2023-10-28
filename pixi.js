@@ -1,8 +1,6 @@
 // todorc
-// disable step while run & vice versa
-// lock editor on run / step
-// editor.setReadOnly(true);  // false to make it editable
-// set editor tab to 2
+//rnd reset
+//leave page
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
@@ -45,7 +43,27 @@ setupWorld = () => {
     GAME_MANAGER.pixiApp.ticker.add(() => GAME_MANAGER.engineTick())    
     init = true
   }
+  instantiateWorldState()
   
+  //start ticker
+  GAME_MANAGER.resetTime(300)
+  GAME_MANAGER.gameTick = () => gameTick()
+}
+
+const valid = new Set([-1,0,1])
+validateMovement = (v) => {
+  let err 
+  if (hasMoved) {
+    err = 'invalid movement: you can only move once per update()'
+  } else if (!Array.isArray(v) || v.length !== 2) {
+    err = 'invalid movement: ' + v + ' \n vector of length 2 expected'
+  } else if (v.some(x => !valid.has(x)) || !v.some(x => x === 0)) {
+    err = 'invalid movement: ' + v + ' \n vector of magnitude 1'
+  }
+  return err
+}
+
+instantiateWorldState = () => {
   // Instantiate stuff
   GAME_MANAGER.instantiate('player','resources/man.svg', [21,35], [3,8])
   GAME_MANAGER.instantiate('flag','resources/racing-flag.svg', [36,36], [0,5], false)
@@ -68,33 +86,17 @@ setupWorld = () => {
     hasMoved = true
   }
   p.move = (v) => GAME_MANAGER.wrappers.move(v)
-  GAME_MANAGER.worldState = {
+  GAME_MANAGER.state = {
     player: p,
     target: {position: [0,5]}
   }
-  //start ticke
-  GAME_MANAGER.resetTime(300)
-  GAME_MANAGER.gameTick = () => gameTick()
-}
-
-const valid = new Set([-1,0,1])
-validateMovement = (v) => {
-  let err 
-  if (hasMoved) {
-    err = 'invalid movement: you can only move once per update()'
-  } else if (!Array.isArray(v) || v.length !== 2) {
-    err = 'invalid movement: ' + v + ' \n vector of length 2 expected'
-  } else if (v.some(x => !valid.has(x)) || !v.some(x => x === 0)) {
-    err = 'invalid movement: ' + v + ' \n vector of magnitude 1'
-  }
-  return err
 }
 
 gameTick = () => {
-  //update worldState
+  //update state
   hasMoved = false
-  GAME_MANAGER.worldState.player.position = GAME_MANAGER.dynamicObjects[0].position
-  GAME_MANAGER.wrappers.update(GAME_MANAGER.worldState)
+  GAME_MANAGER.state.player.position = GAME_MANAGER.dynamicObjects[0].position
+  GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
 }
 
 onLoad = () => {
@@ -104,7 +106,6 @@ onLoad = () => {
 const onRun = () => {
   hasMoved = false
   GAME_MANAGER.time.paused = !GAME_MANAGER.time.paused
-
   if(GAME_MANAGER.time.paused) {
     PAGE_MANAGER.pause()
   } else {
@@ -113,11 +114,12 @@ const onRun = () => {
   if (GAME_MANAGER.time.paused) return
   PAGE_MANAGER.evalCode()
   GAME_MANAGER.time.lastGameTick = GAME_MANAGER.time.elapsed
-  GAME_MANAGER.wrappers.update(GAME_MANAGER.worldState)
+  GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
 }
 
 const onStep = () => {
   hasMoved = false
+  PAGE_MANAGER.step()
   PAGE_MANAGER.evalCode()
   GAME_MANAGER.time.lastGameTick = GAME_MANAGER.time.elapsed
   GAME_MANAGER.time.step = true

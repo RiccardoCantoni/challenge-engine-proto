@@ -65,13 +65,13 @@ const GAME_MANAGER = {
     move: () => {},
     update: () => {}
   },
-  worldState: {},
+  state: {},
 
   engineTick () {
     this.time.elapsed += this.pixiApp.ticker.deltaMS
     if (this.time.elapsed - this.time.lastGameTick >= this.time.gameTick) { // next game tick
       if (!this.time.paused || this.time.step) {
-        gameTick(this.worldState)
+        gameTick(this.state)
         this.time.step = false
       }
       this.time.lastGameTick = this.time.elapsed

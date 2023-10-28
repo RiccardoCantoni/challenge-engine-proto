@@ -1,14 +1,14 @@
 :root {
-  --neutral-color: #2d2d2d;
+  --neutral: #2d2d2d;
   --primary: #6dbf15;
   --primary-on: #070d01;
-  --primary-container: #224005;
+  --primary-container: #2f8006;
   --primary-on-container: #dee8cf;
 }
 
 
 .neutral {
-  background-color: var(--neutral-color);
+  background-color: var(--neutral);
 }
 
 #editor { 
@@ -35,7 +35,13 @@ button:disabled,
 button[disabled]{
   pointer-events: none;
   opacity: 0.3;
+  box-shadow: none;
+}
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+  box-shadow: none;
 }
 
 .shadow {
@@ -44,12 +50,12 @@ button[disabled]{
 
 .buttonPressed {
   background-color: var(--primary-container); 
-  color: var(--primary-on-container);
+  /* color: var(--primary-on-container); */
 }
 
 .button:hover {
   background-color: var(--primary-container); 
-  color: var(--primary-on-container);
+  /* color: var(--primary-on-container); */
 }
 
 .grid {
