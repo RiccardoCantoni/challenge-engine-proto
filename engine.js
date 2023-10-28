@@ -49,7 +49,7 @@ const GAME_MANAGER = {
 
   move (id, v) {
     const go = this.dynamicObjects.find(o => o.id === id)
-    let w = arraySum(go.position, v)
+    let w = vectorSum(go.position, v)
     if (w[0] < 0 || w[0]>=this.terrain.size[0] || w[1] < 0 || w[1]>=this.terrain.size[1]) return
     go.position = w
     w = coordsToPixels(w, this)
@@ -65,13 +65,13 @@ const GAME_MANAGER = {
     move: () => {},
     update: () => {}
   },
-  state: {},
+  worldState: {},
 
   engineTick () {
     this.time.elapsed += this.pixiApp.ticker.deltaMS
     if (this.time.elapsed - this.time.lastGameTick >= this.time.gameTick) { // next game tick
       if (!this.time.paused || this.time.step) {
-        gameTick(this.state)
+        gameTick(this.worldState)
         this.time.step = false
       }
       this.time.lastGameTick = this.time.elapsed

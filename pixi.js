@@ -1,6 +1,7 @@
 // todorc
 //rnd reset
 //leave page
+//win
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
@@ -43,7 +44,22 @@ setupWorld = () => {
     GAME_MANAGER.pixiApp.ticker.add(() => GAME_MANAGER.engineTick())    
     init = true
   }
+
   instantiateWorldState()
+  GAME_MANAGER.wrappers.move = (v) => {
+    if (PAGE_MANAGER.didEval) {
+      const err = validateMovement(v)
+      if (err) {
+        PAGE_MANAGER.didEval = false
+        GAME_MANAGER.time.paused = true
+        console.error(err)
+        PAGE_MANAGER.stop()
+        return
+      }
+    }
+    GAME_MANAGER.move('player', v)
+    hasMoved = true
+  }
   
   //start ticker
   GAME_MANAGER.resetTime(300)
@@ -65,30 +81,23 @@ validateMovement = (v) => {
 
 instantiateWorldState = () => {
   // Instantiate stuff
-  GAME_MANAGER.instantiate('player','resources/man.svg', [21,35], [3,8])
-  GAME_MANAGER.instantiate('flag','resources/racing-flag.svg', [36,36], [0,5], false)
+  let p1 = [0,0]
+  let p2 = [0,0]
+  do {
+    p1 = getRandomVector(0,9)
+    p2 = getRandomVector(0,9)
+  } while (distance(p1,p2) <= 4)
+
+  GAME_MANAGER.instantiate('player','resources/man.svg', [21,35], p1)
+  GAME_MANAGER.instantiate('flag','resources/racing-flag.svg', [36,36], p2, false)
 
   // initial state & actions
   const p = new Player()
-  p.position = [3,8]
-  GAME_MANAGER.wrappers.move = (v) => {
-    if (PAGE_MANAGER.didEval) {
-      const err = validateMovement(v)
-      if (err) {
-        PAGE_MANAGER.didEval = false
-        GAME_MANAGER.time.paused = true
-        console.error(err)
-        PAGE_MANAGER.stop()
-        return
-      }
-    }
-    GAME_MANAGER.move('player', v)
-    hasMoved = true
-  }
+  p.position = p1
   p.move = (v) => GAME_MANAGER.wrappers.move(v)
   GAME_MANAGER.state = {
     player: p,
-    target: {position: [0,5]}
+    target: {position: p2}
   }
 }
 
