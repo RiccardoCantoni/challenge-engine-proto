@@ -11,6 +11,25 @@
     <script src="pixi.js"></script>
   </head>
   <body class="neutral" onload="onLoad()" style="width: 100vw; height: 100vh; margin: 0; display: flex; flex-direction: row; overflow: hidden;">
+    <!-- The Modal -->
+    <div id="modalScreen" class="modalScreen">
+      <div class="container">
+        Good Job! you have completed this challenge.</br>
+        You can submit your solution, or you can</br>
+        continue working on it and improve your code before submitting</br>
+        </br>
+        PS: While reworks are definitelly allowed,</br>
+        please submit only when you're satisfied with your solution.</br>
+        Thank you!
+        </br>
+        </br>
+        <div style="display: flex; flex-direction:row; justify-content: flex-end;">
+          <button class="button" id="buttonHome" onclick="onHome()">Home</button>
+          <button class="button" id="buttonReset" onclick="onReset()">Reset</button>
+          <button class="button" id="buttonSubmit" onclick="onSubmit()">Submit</button>
+        </div>
+      </div>
+    </div>
     <!-- editor -->
     <div style="flex:1; padding: 24px; display:flex; flex-direction: column;">
       <div id="editor" class="shadow">function update(state) {

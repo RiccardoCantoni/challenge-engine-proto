@@ -6,7 +6,6 @@
   --primary-on-container: #dee8cf;
 }
 
-
 .neutral {
   background-color: var(--neutral);
 }
@@ -16,7 +15,7 @@
 }
 
 .body {
-  font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+  font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
 }
 
 .button {
@@ -24,7 +23,7 @@
   border: none;
   height: 32px;
   border-radius: 15px;
-  margin-left: 3px;
+  margin-left: 5px;
   font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
   background-color: var(--primary);
   color: var(--primary-on);
@@ -50,18 +49,32 @@ button[disabled]{
 
 .buttonPressed {
   background-color: var(--primary-container); 
-  /* color: var(--primary-on-container); */
 }
 
 .button:hover {
   background-color: var(--primary-container); 
-  /* color: var(--primary-on-container); */
 }
 
-.grid {
-  height: 100%;
-  background-color: #fff;
-  background-image: conic-gradient(at calc(100% - 1px) calc(100% - 1px),#a9a9a9, 270deg, #0000 0);
-  background-size: 40px 40px;
+.modalScreen {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: fixed;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  overflow: none;
+  background-color: black;
+  background-color: rgba(0,0,0,0.6);
 }
 
+.container {
+  background-color: var(--neutral);
+  color: var(--primary-on-container);
+  text-align: left;
+  padding:14px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px 0px rgba(22, 23, 20, 0.5);
+  font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+}

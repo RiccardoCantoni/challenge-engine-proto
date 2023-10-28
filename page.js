@@ -9,6 +9,7 @@ PAGE_MANAGER = {
     this.editor.session.setMode("ace/mode/javascript")
     this.editor.session.setTabSize(2)
     this.editorDiv = document.getElementById('editor')
+    this.modal = document.getElementById('modalScreen')
   },
   step () {
     this.editor.setReadOnly(true)
@@ -37,6 +38,7 @@ PAGE_MANAGER = {
     this.buttonRun.classList.remove('buttonPressed')
     this.editor.setReadOnly(false)
     this.editorDiv.classList.remove('disabled')
+    this.modal.style.display = 'none'
   },
   evalCode () {
     if (!this.didEval) {
@@ -44,5 +46,16 @@ PAGE_MANAGER = {
       eval('GAME_MANAGER.wrappers.update = (worldState) => update(worldState)')
       this.didEval = true
     }
+  },
+  openWinScreen () {
+    this.stop()
+    this.modal.style.display = 'flex'
+  },
+  submit (challengeName) {
+    window.open(
+      `mailto:rcantoni@deloitte.it
+      ?subject=Challenge submission for: ${challengeName}
+      &body=${encodeURI(this.editor.getValue())}`
+    )
   }
 }

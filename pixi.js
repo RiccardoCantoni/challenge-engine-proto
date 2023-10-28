@@ -1,7 +1,8 @@
 // todorc
-//rnd reset
+//submit
 //leave page
 //win
+//sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
@@ -101,11 +102,17 @@ instantiateWorldState = () => {
   }
 }
 
+checkWon = () => vectorEquals(GAME_MANAGER.state.player.position, GAME_MANAGER.state.target.position)
+
 gameTick = () => {
   //update state
   hasMoved = false
   GAME_MANAGER.state.player.position = GAME_MANAGER.dynamicObjects[0].position
   GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
+  if (checkWon()) {
+    GAME_MANAGER.time.paused = true
+    PAGE_MANAGER.openWinScreen()
+  }
 }
 
 onLoad = () => {
@@ -142,4 +149,8 @@ const onReset = () => {
   GAME_MANAGER.deInstantiate('flag', false)
   console.clear()
   setupWorld()
+}
+
+const onSubmit = () => {
+  PAGE_MANAGER.submit('tutorial')
 }
