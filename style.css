@@ -43,16 +43,26 @@ button[disabled]{
   box-shadow: none;
 }
 
-.shadow {
-  box-shadow: 0px 2px 4px 0px rgba(22, 23, 20, 0.5);
-}
-
 .buttonPressed {
   background-color: var(--primary-container); 
 }
 
 .button:hover {
   background-color: var(--primary-container); 
+}
+
+.buttonLink {
+  min-width: 60px;
+  background: none;
+  border: none;
+  height: 32px;
+  margin-left: 5px;
+  font: 16px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+  color: var(--primary);
+}
+
+.buttonLink:hover {
+  color: var(--primary-on-container); 
 }
 
 .modalScreen {
@@ -77,4 +87,21 @@ button[disabled]{
   border-radius: 8px;
   box-shadow: 0px 2px 4px 0px rgba(22, 23, 20, 0.5);
   font: 14px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+}
+
+
+.shadow {
+  box-shadow: 0px 2px 4px 0px rgba(22, 23, 20, 0.5);
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  flex:1;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  flex:1;
 }
