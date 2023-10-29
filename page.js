@@ -29,6 +29,7 @@ PAGE_MANAGER = {
     this.buttonRun.classList.remove('buttonPressed')
     this.buttonRun.disabled = true
     this.buttonStep.classList.remove('buttonPressed')
+    console.log(this.buttonStep)
     this.buttonStep.disabled = true
   },
   reset () {
