@@ -61,7 +61,6 @@ const GAME_MANAGER = {
     if (!isInBoundaries(w, this)) return
     // push
     const pushableObj = this.dynamicObjects.find(o => o.attributes.isPushable && vectorEquals(w, o.position))
-    console.log(pushableObj)
     if (pushableObj) {
       let z = vectorSum(v,w)
       if (isInBoundaries(z, this)) {

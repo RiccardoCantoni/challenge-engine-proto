@@ -90,11 +90,8 @@ instantiateWorldState = () => {
   GAME_MANAGER.instantiate('flag','resources/images/racing-flag.svg', [36,36], p2, false)
 
   // initial state & actions
-  const p = new Player()
-  p.position = p1
-  p.move = (v) => GAME_MANAGER.wrappers.move(v)
   GAME_MANAGER.state = {
-    player: p,
+    player: {...new Player(), position: p1, move: (v) => GAME_MANAGER.wrappers.move(v) },
     target: {position: p2}
   }
 }

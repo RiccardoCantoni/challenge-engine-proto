@@ -1,4 +1,5 @@
 // todorc
+//todorc general try catch
 //sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
 // window.onbeforeunload = function() {
@@ -93,13 +94,10 @@ instantiateWorldState = () => {
   GAME_MANAGER.instantiate('trolley','resources/images/shopping-trolley-black.svg', [40,40], p3, true, {isPushable:true})
 
   // initial state & actions
-  const p = new Player()
-  p.position = p1
-  p.move = (v) => GAME_MANAGER.wrappers.move(v)
   GAME_MANAGER.state = {
-    player: p,
+    player: {...new Player(), position: p1, move: (v) => GAME_MANAGER.wrappers.move(v) },
     target: {position: p2},
-    trolley: {position: p3}
+    trolley: {position: p3, isPushable: true}
   }
 }
 
