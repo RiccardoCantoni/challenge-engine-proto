@@ -2,9 +2,9 @@
 //todorc general try catch
 //sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
-// window.onbeforeunload = function() {
-//   return "Data will be lost if you leave the page, are you sure?";
-// }
+window.onbeforeunload = function() {
+  return "Data will be lost if you leave the page, are you sure?";
+}
 
 const Player = class {
   position
@@ -101,7 +101,7 @@ instantiateWorldState = () => {
   }
 }
 
-checkWon = () => vectorEquals(GAME_MANAGER.state.player.position, GAME_MANAGER.state.target.position)
+checkWon = () => vectorEquals(GAME_MANAGER.state.trolley.position, GAME_MANAGER.state.target.position)
 
 gameTick = () => {
   //update state
@@ -153,5 +153,5 @@ const onReset = () => {
 }
 
 const onSubmit = () => {
-  PAGE_MANAGER.submit('tutorial')
+  PAGE_MANAGER.submit('1-Groceries')
 }

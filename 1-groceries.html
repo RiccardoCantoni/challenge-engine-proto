@@ -34,18 +34,11 @@
     <!-- editor -->
     <div style="flex:1; padding: 24px; display:flex; flex-direction: column;">
       <div id="editor" class="shadow">function update(state) {
-        let v = [0,0]
-        v[0] = 
-        state.trolley.position[0] > state.player.position[0] ? 1 : 
-            state.trolley.position[0] < state.player.position[0] ? -1 :
-              0
-        v[1] = 
-        v[0] !== 0 ? 0 :
-          state.trolley.position[1] > state.player.position[1] ? 1 :
-            state.trolley.position[1] < state.player.position[1] ? -1 :
-              0
-        state.player.move(v)
-      }</div> 
+/* Fill in this function. do not change its signature
+console.log() works normally. 
+Here an example of how to move the player */
+state.player.move([1,0])
+}</div> 
     </div>
     <!-- main -->
     <div class="flexColumn" style="align-items: center;">
