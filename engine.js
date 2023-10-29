@@ -22,8 +22,8 @@ const GAME_MANAGER = {
     this.time.tickNumber = 0
   },
 
-  instantiate (id, spriteName, size, coords, dynamic=true) {
-    const go = new GameObject(id, spriteName, size, coords)
+  instantiate (id, spriteName, size, coords, dynamic=true, attributes={}) {
+    const go = new GameObject(id, spriteName, attributes, size, coords)
     if (dynamic) {
       this.dynamicObjects.push(go)
     } else {
@@ -47,16 +47,31 @@ const GAME_MANAGER = {
     delete go
   },
 
+  getGameObject (id, dynamic=true) {
+    if (dynamic) {
+      return this.dynamicObjects.find(o => o.id === id)
+    } else {
+      return this.staticObjects.find(o => o.id === id)
+    }
+  },
+
   move (id, v) {
     const go = this.dynamicObjects.find(o => o.id === id)
     let w = vectorSum(go.position, v)
-    if (w[0] < 0 || w[0]>=this.terrain.size[0] || w[1] < 0 || w[1]>=this.terrain.size[1]) return
+    if (!isInBoundaries(w, this)) return
+    // push
+    const pushableObj = this.dynamicObjects.find(o => o.attributes.isPushable && vectorEquals(w, o.position))
+    console.log(pushableObj)
+    if (pushableObj) {
+      let z = vectorSum(v,w)
+      if (isInBoundaries(z, this)) {
+        this.move(pushableObj.id, v)
+      } else return
+    }
     go.position = w
     w = coordsToPixels(w, this)
     go.sprite.x = w[0]
     go.sprite.y = w[1]
-    if (v[0] || v[1])
-    go.sprite.angle =  v[1] < 0 ? -90 : v[1] > 0 ? 90 : 0
     if (v[0] < 0 && go.sprite.scale.x > 0) go.sprite.scale.x *= -1
   },
 
@@ -81,7 +96,7 @@ const GAME_MANAGER = {
 }
 
 const GameObject = class {
-  constructor (id, spriteName, size, coords, angle = 0) {
+  constructor (id, spriteName, attributes, size, coords, angle = 0) {
       this.id = id
       //coords
       this.position = coords
@@ -96,5 +111,7 @@ const GameObject = class {
       this.sprite.width = size[0]
       this.sprite.height = size[1]
       this.sprite.angle = angle
+      //attributes
+      this.attributes = attributes
   }
 }

@@ -1,9 +1,9 @@
 // todorc
 //sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
-window.onbeforeunload = function() {
-  return "Data will be lost if you leave the page, are you sure?";
-}
+// window.onbeforeunload = function() {
+//   return "Data will be lost if you leave the page, are you sure?";
+// }
 
 const Player = class {
   position
@@ -81,13 +81,16 @@ instantiateWorldState = () => {
   // Instantiate stuff
   let p1 = [0,0]
   let p2 = [0,0]
+  let p3 = [0,0]
   do {
     p1 = getRandomVector(0,9)
     p2 = getRandomVector(0,9)
-  } while (distance(p1,p2) <= 4)
+    p3 = getRandomVector(1,8)
+  } while (distance(p1,p2) <= 4 || distance(p1,p3) <= 4 || distance(p3,p2) <= 4)
 
   GAME_MANAGER.instantiate('player','resources/images/man.svg', [21,35], p1)
   GAME_MANAGER.instantiate('flag','resources/images/racing-flag.svg', [36,36], p2, false)
+  GAME_MANAGER.instantiate('trolley','resources/images/shopping-trolley-black.svg', [40,40], p3, true, {isPushable:true})
 
   // initial state & actions
   const p = new Player()
@@ -95,7 +98,8 @@ instantiateWorldState = () => {
   p.move = (v) => GAME_MANAGER.wrappers.move(v)
   GAME_MANAGER.state = {
     player: p,
-    target: {position: p2}
+    target: {position: p2},
+    trolley: {position: p3}
   }
 }
 
@@ -104,7 +108,8 @@ checkWon = () => vectorEquals(GAME_MANAGER.state.player.position, GAME_MANAGER.s
 gameTick = () => {
   //update state
   hasMoved = false
-  GAME_MANAGER.state.player.position = GAME_MANAGER.dynamicObjects[0].position
+  GAME_MANAGER.state.player.position = GAME_MANAGER.getGameObject('player').position
+  GAME_MANAGER.state.trolley.position = GAME_MANAGER.getGameObject('trolley').position
   GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
   if (checkWon()) {
     GAME_MANAGER.time.paused = true
@@ -144,6 +149,7 @@ const onReset = () => {
   PAGE_MANAGER.reset()
   GAME_MANAGER.deInstantiate('player')
   GAME_MANAGER.deInstantiate('flag', false)
+  GAME_MANAGER.deInstantiate('trolley')
   console.clear()
   setupWorld()
 }

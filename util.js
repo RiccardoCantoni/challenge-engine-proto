@@ -34,9 +34,17 @@ const distance = (a,b) => {
 }
 const multiplyVector = (v, x) => v.map(e => e*x)
 
-const coordsToPixels = (coords, manager) => {
+const coordsToPixels = (coords, engine) => {
   return [
-    (coords[0] + 0.5 ) * manager.terrain.cellSize,
-    (manager.terrain.size[1] - coords[1] - 0.5) * manager.terrain.cellSize,
+    (coords[0] + 0.5 ) * engine.terrain.cellSize,
+    (engine.terrain.size[1] - coords[1] - 0.5) * engine.terrain.cellSize,
   ]
 }
+
+const isInBoundaries = (coords, engine) => (
+  coords[0] >= 0 &&
+  coords[0] < engine.terrain.size[0] &&
+  coords[1] >= 0 &&
+  coords[1] < engine.terrain.size[1])
+
+
