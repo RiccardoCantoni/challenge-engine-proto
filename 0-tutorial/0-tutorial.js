@@ -86,8 +86,8 @@ instantiateWorldState = () => {
     p2 = getRandomVector(0,9)
   } while (distance(p1,p2) <= 4)
 
-  GAME_MANAGER.instantiate('player','resources/images/man.svg', [21,35], p1)
-  GAME_MANAGER.instantiate('flag','resources/images/racing-flag.svg', [36,36], p2, false)
+  GAME_MANAGER.instantiate('player','/resources/images/man.svg', [21,35], p1)
+  GAME_MANAGER.instantiate('flag','/resources/images/racing-flag.svg', [36,36], p2, false)
 
   // initial state & actions
   GAME_MANAGER.state = {
