@@ -53,10 +53,11 @@ PAGE_MANAGER = {
     this.modal.style.display = 'flex'
   },
   submit (challengeName) {
+    navigator.clipboard.writeText(this.editor.getValue())
     window.open(
       `mailto:rcantoni@deloitte.it
       ?subject=Challenge submission for: ${challengeName}
-      &body=${encodeURI(this.editor.getValue())}`
+      &body=${encodeURI('your code has been copied to your clipboard. please paste it below this line:\n========')}`
     )
   }
 }
