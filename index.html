@@ -23,7 +23,7 @@
           <p>Unlike traditional hackatons this website relies on a homemade engine that supports a "game-like" graphical interface, in which 
             the effects of your code can be seen in real-time.</p>
           <p>The rules are simple:</br>
-          - The language is Javascript. You are given the <i>update()</i> function to fill in.</br>
+          - The language is Javascript. While you can write all the code you want, your task is to fill in the <i>update()</i> function.</br>
           - <i>update()</i> has one parameter, the <i>state</i>:
             an object containing everything you need to know about the simulated environment and all the actions that can be performed to affect it.</br>
           - <i>update()</i> will be called three times a second.</p>
@@ -37,7 +37,6 @@
             The <i>state</i> contains two objects:</br> 
             - <i>target</i>, with an attribute <i>position</i></br>
             - <i>player</i>, also with a <i>position</i>, but also exposing a <i>move()</i> function.<br>
-            All positions, coordinate, movements, etc.. are expressed as length 2 arrays.
           </p>
           <p>Get <i>player</i> to the <i>target.</i></p>
           <div style="display: flex; align-items: center; justify-content: center;">
@@ -52,11 +51,10 @@
           </div>
           <p>We start introducing more objects to the environment: a shopping trolley.</br>
             The shopping trolley can be <i>pushed</i> by the player by moving into it.</br>
-            Since it can't be pulled, be careful not to push the trolley into the edges of the grid, as it will
-            make the challenge unrecoverable.</p>
           <p>Push the <i>trolley</i> to the <i>target.</i></p>
           <div style="display: flex; align-items: center; justify-content: center;">
-            <button class="button" id="buttonHome" onclick="window.open('1-groceries/1-groceries.html','_self')">Start</button>
+            <button class="button" onclick="window.open('1-groceries/1-groceries-help.html')">Details</button>
+            <button class="button" onclick="window.open('1-groceries/1-groceries.html','_self')">Start</button>
           </div>
         </div>
       </div>

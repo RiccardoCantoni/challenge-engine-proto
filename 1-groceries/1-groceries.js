@@ -1,6 +1,7 @@
 //todorc
 //todorc general try catch
-//sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
+// todorc expose utils
+// sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
 window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
