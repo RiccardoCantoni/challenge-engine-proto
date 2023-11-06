@@ -59,14 +59,6 @@ const GAME_MANAGER = {
     const go = this.dynamicObjects.find(o => o.id === id)
     let w = vectorSum(go.position, v)
     if (!isInBoundaries(w, this)) return
-    // push
-    const pushableObj = this.dynamicObjects.find(o => o.attributes.isPushable && vectorEquals(w, o.position))
-    if (pushableObj) {
-      let z = vectorSum(v,w)
-      if (isInBoundaries(z, this)) {
-        this.move(pushableObj.id, v)
-      } else return
-    }
     go.position = w
     w = coordsToPixels(w, this)
     go.sprite.x = w[0]
