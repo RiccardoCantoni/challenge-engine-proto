@@ -1,9 +1,9 @@
 // todorc submit tutorial not allowed
 // todorc sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
-window.onbeforeunload = function() {
-  return "Data will be lost if you leave the page, are you sure?";
-}
+// window.onbeforeunload = function() {
+//   return "Data will be lost if you leave the page, are you sure?";
+// }
 
 const Player = class {
   position
