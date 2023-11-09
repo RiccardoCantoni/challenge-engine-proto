@@ -1,6 +1,4 @@
-//todorc general try catch
 // todorc expose utils with doc
-// sometimes while moving along y the angle is flipped (probably a mix of flip + angle)
 
 window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
@@ -108,7 +106,14 @@ gameTick = () => {
   hasMoved = false
   GAME_MANAGER.state.player.position = GAME_MANAGER.getGameObject('player').position
   GAME_MANAGER.state.trolley.position = GAME_MANAGER.getGameObject('trolley').position
-  GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
+  try{
+    GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
+  } catch(err){
+    console.error(err)
+    GAME_MANAGER.time.paused = true
+    PAGE_MANAGER.stop()
+    PAGE_MANAGER.didEval = false
+  }
   if (checkWon()) {
     GAME_MANAGER.time.paused = true
     PAGE_MANAGER.openWinScreen()
@@ -130,7 +135,6 @@ const onRun = () => {
   if (GAME_MANAGER.time.paused) return
   PAGE_MANAGER.evalCode()
   GAME_MANAGER.time.lastGameTick = GAME_MANAGER.time.elapsed
-  GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
 }
 
 const onStep = () => {
