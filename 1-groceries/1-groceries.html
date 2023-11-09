@@ -1,14 +1,14 @@
 <!doctype html>
 <html>
   <head>
-    <link rel="icon" type="image/x-icon" href="/resources/images/man-favicon.svg">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/x-icon" href="./../resources/images/man-favicon.svg">
+    <link rel="stylesheet" href="./../style.css">
     <style type="text/css" media="screen"></style>
-    <script src="/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./../ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://pixijs.download/release/pixi.min.js"></script>
-    <script src="/page.js"></script>
+    <script src="./../page.js"></script>
     <script src="1-groceries-engine.js"></script>
-    <script src="/util.js"></script>
+    <script src="./../util.js"></script>
     <script src="1-groceries.js"></script>
   </head>
   <body class="neutral" onload="onLoad()" style="width: 100vw; height: 100vh; margin: 0; display: flex; flex-direction: row; overflow: hidden;">
@@ -25,7 +25,7 @@
         </br>
         </br>
         <div style="display: flex; flex-direction:row; justify-content: flex-end;">
-          <button class="button" id="buttonHome" onclick="window.open('/index.html','_self')">Home</button>
+          <button class="button" id="buttonHome" onclick="window.open('./../index.html','_self')">Home</button>
           <button class="button" id="buttonReset" onclick="onReset()">Reset</button>
           <button class="button" id="buttonSubmit" onclick="onSubmit()">Submit</button>
         </div>
@@ -44,7 +44,7 @@ state.player.move([1,0])
     <div class="flexColumn" style="align-items: center;">
       <div class="flexRow" style="height: 32px; flex:0; width:100%; justify-content: flex-end; margin-right: 32px; margin-top: 10px;">
         <button class="buttonLink" onclick="window.open('1-groceries-help.html')">Help</button>
-        <button class="buttonLink" onclick="window.open('/index.html','_self')">Home</button>
+        <button class="buttonLink" onclick="window.open('./../index.html','_self')">Home</button>
       </div>
       <div style="display:flex; flex:1; align-items:center; justify-content:center; text-align: center;">
         <div class="flexColumn" style="align-items: end;">
