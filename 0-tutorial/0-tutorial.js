@@ -11,7 +11,6 @@ init = false
 hasMoved = false
 setupWorld = () => {
   if (!init) {
-    PAGE_MANAGER.init()
     // Init gm
     GAME_MANAGER.terrain.size = [10,10]
     GAME_MANAGER.terrain.cellSize = 40
@@ -22,8 +21,7 @@ setupWorld = () => {
       autoStart:true, 
       background:'#ffffff'
     })
-    // Create the application helper
-    document.getElementById('pixi').appendChild(GAME_MANAGER.pixiApp.view) // add its render target to the page
+    PAGE_MANAGER.init(GAME_MANAGER)
     // Draw the world
     const graphics = new PIXI.Graphics()
     graphics.lineStyle(1, '#aeb0af')

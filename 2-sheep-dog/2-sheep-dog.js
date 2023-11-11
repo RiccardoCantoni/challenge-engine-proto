@@ -1,8 +1,8 @@
 // todorc utils with doc
 
-window.onbeforeunload = function() {
-  return "Data will be lost if you leave the page, are you sure?";
-}
+// window.onbeforeunload = function() {
+//   return "Data will be lost if you leave the page, are you sure?";
+// }
 
 const Player = class {
   position
@@ -14,8 +14,8 @@ hasMoved = false
 setupWorld = () => {
   if (!init) {
     // Init gm
-    GAME_MANAGER.terrain.size = [10,10]
-    GAME_MANAGER.terrain.cellSize = 40
+    GAME_MANAGER.terrain.size = [20,20]
+    GAME_MANAGER.terrain.cellSize = 30 
     const w = GAME_MANAGER.terrain.size[0] * GAME_MANAGER.terrain.cellSize
     GAME_MANAGER.pixiApp = new PIXI.Application({ 
       width:w, 
@@ -85,8 +85,8 @@ instantiateWorldState = () => {
     p3 = getRandomVector(1,8)
   } while (distance(p1,p2) <= 4 || distance(p1,p3) <= 4 || distance(p3,p2) <= 4)
 
-  GAME_MANAGER.instantiate('player','./../resources/images/man.svg', [21,35], p1)
-  GAME_MANAGER.instantiate('flag','./../resources/images/racing-flag.svg', [36,36], p2, false)
+  GAME_MANAGER.instantiate('player','./../resources/images/man.svg', [16,28], p1)
+  GAME_MANAGER.instantiate('flag','./../resources/images/racing-flag.svg', [27,27], p2, false)
   GAME_MANAGER.instantiate('trolley','./../resources/images/shopping-trolley-black.svg', [40,40], p3, true, {isPushable:true})
 
   // initial state & actions

@@ -1,6 +1,6 @@
 PAGE_MANAGER = {
   didEval: false,
-  init () {
+  init (gm) {
     this.buttonRun = document.getElementById('buttonRun')
     this.buttonStep = document.getElementById('buttonStep')
     this.buttonReset = document.getElementById('buttonReset')
@@ -10,6 +10,9 @@ PAGE_MANAGER = {
     this.editor.session.setTabSize(2)
     this.editorDiv = document.getElementById('editor')
     this.modal = document.getElementById('modalScreen')
+    document.getElementById('pixi').appendChild(gm.pixiApp.view)
+    document.getElementById('pixi').style.height = gm.terrain.size[1] * gm.terrain.cellSize
+    document.getElementById('pixi').style.width = gm.terrain.size[0] * gm.terrain.cellSize
   },
   step () {
     this.editor.setReadOnly(true)
