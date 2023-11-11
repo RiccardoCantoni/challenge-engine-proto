@@ -1,4 +1,4 @@
-// todorc expose utils with doc
+// todorc utils with doc
 
 window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
@@ -93,6 +93,7 @@ instantiateWorldState = () => {
 
   // initial state & actions
   GAME_MANAGER.state = {
+    u: UTIL,
     player: {...new Player(), position: p1, move: (v) => GAME_MANAGER.wrappers.move(v) },
     target: {position: p2},
     trolley: {position: p3, isPushable: true}

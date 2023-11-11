@@ -21,7 +21,7 @@ const vectorSum = (a,b) => {
   return a.map((x,i)=> x+b[i])
 }
 const vectorSubtract = (a,b) => {
-  if (a.length !== b.length) throw "error: trying to sum vectors of different size"
+  if (a.length !== b.length) throw "error: trying to subtract vectors of different size"
   return a.map((x,i)=> x-b[i])
 }
 const vectorEquals = (a,b) => JSON.stringify(a) === JSON.stringify(b)
@@ -32,7 +32,14 @@ const vectorMagnitude = (a) => {
 const distance = (a,b) => {
   return vectorMagnitude(vectorSubtract(a,b))
 }
-const multiplyVector = (v, x) => v.map(e => e*x)
+
+const manhattanDistance = (a,b) => {
+  if ([...a,...b].find(x => !Number.isInteger(x))) throw "error: manhattanDistance() expectes two vectors of integers"
+  if (a.length !== 2 || b.length !== 2) throw "error: manhattanDistance() expectes two vectors of size 2"
+  return Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1])
+} 
+
+const vectorMultiply = (v, x) => v.map(e => e*x)
 
 const coordsToPixels = (coords, engine) => {
   return [
@@ -46,5 +53,17 @@ const isInBoundaries = (coords, engine) => (
   coords[0] < engine.terrain.size[0] &&
   coords[1] >= 0 &&
   coords[1] < engine.terrain.size[1])
+
+const UTIL = {
+  clamp: clamp,
+  lerp1d: lerp1d,
+  lerp2d: lerp2d,
+  vectorSum: vectorSum,
+  vectorSubtract: vectorSubtract,
+  vectorEquals: vectorEquals,
+  vectorMultiply: vectorMultiply,
+  distance: distance,
+  manhattanDistance: manhattanDistance,
+}
 
 
