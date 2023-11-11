@@ -45,9 +45,14 @@ PAGE_MANAGER = {
   },
   evalCode () {
     if (!this.didEval) {
-      eval(this.editor.getValue())
-      eval('GAME_MANAGER.wrappers.update = (worldState) => update(worldState)')
-      this.didEval = true
+      try {
+        eval(this.editor.getValue())
+        eval('GAME_MANAGER.wrappers.update = (worldState) => update(worldState)')
+        this.didEval = true
+      } catch (e) {
+        console.error('an error occurred while evaluating your code:', e)
+        stop()
+      }
     }
   },
   openWinScreen () {

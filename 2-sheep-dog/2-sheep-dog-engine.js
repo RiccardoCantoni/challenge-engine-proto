@@ -22,7 +22,7 @@ const GAME_MANAGER = {
     this.time.tickNumber = 0
   },
 
-  instantiate (id, spriteName, size, coords, dynamic=true, attributes={}) {
+  instantiate (id, spriteName, size, coords, dynamic=true, attributes=null) {
     const go = new GameObject(id, spriteName, attributes, size, coords)
     if (dynamic) {
       this.dynamicObjects.push(go)
@@ -52,6 +52,14 @@ const GAME_MANAGER = {
       return this.dynamicObjects.find(o => o.id === id)
     } else {
       return this.staticObjects.find(o => o.id === id)
+    }
+  },
+
+  getGameoObjectsByTag (tag, dynamic=true) {
+    if (dynamic) {
+      return this.dynamicObjects.filter(o => o.tag === tag)
+    } else {
+      return this.staticObjects.filter(o => o.tag === tag)
     }
   },
 
@@ -87,7 +95,7 @@ const GAME_MANAGER = {
 }
 
 const GameObject = class {
-  constructor (id, spriteName, attributes, size, coords, angle = 0) {
+  constructor (id, spriteName, tags, size, coords, angle = 0) {
       this.id = id
       //coords
       this.position = coords
@@ -102,7 +110,7 @@ const GameObject = class {
       this.sprite.width = size[0]
       this.sprite.height = size[1]
       this.sprite.angle = angle
-      //attributes
-      this.attributes = attributes
+      //tags
+      this.tags = tags
   }
 }
