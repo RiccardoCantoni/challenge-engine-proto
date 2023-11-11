@@ -6,6 +6,7 @@ const getRandomVector = (from, to, size=2) => {
   }
   return v
 }
+const shuffle = a => (a.sort(() => (Math.random() > .5 ? 1 : -1)))
 
 const clamp = (x, min, max) => x < min ? min : x > max ? max : x
 
