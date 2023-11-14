@@ -1,4 +1,5 @@
 // todorc utils with doc
+// todorc move cache to util
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
@@ -8,6 +9,8 @@ const Player = class {
   position
   move
 }
+
+const cache1 = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
 
 const valid = new Set([-1,0,1])
 validateMovement = (v) => {
@@ -128,12 +131,38 @@ gameTick = () => {
 
   try{
     GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
+    const dog = GAME_MANAGER.getGameObject('dog')
+    const allSheep = shuffle(GAME_MANAGER.getGameoObjectsByTag('sheep'))
+    shuffle(cache1)
+    console.log(dog.position, allSheep[0].position)
+    const sheepMovement = allSheep
+      .map(s => ({
+        go: s,
+        idle: distance(s.position, dog.position) > 2,
+        force: cache1
+        .map(v => vectorSum(v, s.position))
+        .map(v => {console.log(v); return v})
+        .filter(v => isInBoundaries(v, GAME_MANAGER))
+        .filter(v => !vectorEquals(v, dog.position))
+        //if length > 4 exclude distance = 2
+        .filter((v,_,arr) => !(arr.length > 4 && manhattanDistance(v, dog.position) < 2)) 
+        .map(v => vectorSubtract(v, s.position))
+        [0]
+      }))
+      sheepMovement.map(s => {
+        if (s.idle){
+          if (Math.random() < 0.1) GAME_MANAGER.move(s.go.id, randomPick(cache1))
+        } else {
+          GAME_MANAGER.move(s.go.id, s.force)
+        }
+      })
   } catch(err){
     console.error('an error occurred while executing your code:', err)
     GAME_MANAGER.time.paused = true
     PAGE_MANAGER.stop()
     PAGE_MANAGER.didEval = false
   }
+
   if (checkWon()) {
     GAME_MANAGER.time.paused = true
     PAGE_MANAGER.openWinScreen()

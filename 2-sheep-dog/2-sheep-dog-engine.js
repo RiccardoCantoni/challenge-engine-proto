@@ -22,8 +22,8 @@ const GAME_MANAGER = {
     this.time.tickNumber = 0
   },
 
-  instantiate (id, spriteName, size, coords, dynamic=true, attributes=null) {
-    const go = new GameObject(id, spriteName, attributes, size, coords)
+  instantiate (id, spriteName, size, coords, dynamic=true, tags={}) {
+    const go = new GameObject(id, spriteName, size, coords, tags)
     if (dynamic) {
       this.dynamicObjects.push(go)
     } else {
@@ -57,15 +57,17 @@ const GAME_MANAGER = {
 
   getGameoObjectsByTag (tag, dynamic=true) {
     if (dynamic) {
-      return this.dynamicObjects.filter(o => o.tag === tag)
+      return this.dynamicObjects.filter(o => o.tags[tag])
     } else {
-      return this.staticObjects.filter(o => o.tag === tag)
+      return this.staticObjects.filter(o => o.tags[tag])
     }
   },
 
   move (id, v) {
     const go = this.dynamicObjects.find(o => o.id === id)
     let w = vectorSum(go.position, v)
+    if ([...this.dynamicObjects, ...this.staticObjects]
+      .find(o => vectorEquals(o.position, w))) return
     if (!isInBoundaries(w, this)) return
     go.position = w
     w = coordsToPixels(w, this)
@@ -95,7 +97,7 @@ const GAME_MANAGER = {
 }
 
 const GameObject = class {
-  constructor (id, spriteName, tags, size, coords, angle = 0) {
+  constructor (id, spriteName, size, coords, tags) {
       this.id = id
       //coords
       this.position = coords
@@ -109,7 +111,6 @@ const GameObject = class {
       this.sprite.y = this.pxPosition[1]
       this.sprite.width = size[0]
       this.sprite.height = size[1]
-      this.sprite.angle = angle
       //tags
       this.tags = tags
   }

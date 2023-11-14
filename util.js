@@ -6,6 +6,7 @@ const getRandomVector = (from, to, size=2) => {
   }
   return v
 }
+const randomPick = (a) => a[getRandomInt(0,a.length)]
 const shuffle = a => (a.sort(() => (Math.random() > .5 ? 1 : -1)))
 
 const clamp = (x, min, max) => x < min ? min : x > max ? max : x
@@ -18,11 +19,11 @@ const sinerp = (from, to, l) => {
 }
 
 const vectorSum = (a,b) => {
-  if (a.length !== b.length) throw "error: trying to sum vectors of different size"
+  if (a.length !== b.length) throw "vectorSum error: trying to sum vectors of different size: "+a.length+' '+b.length
   return a.map((x,i)=> x+b[i])
 }
 const vectorSubtract = (a,b) => {
-  if (a.length !== b.length) throw "error: trying to subtract vectors of different size"
+  if (a.length !== b.length) throw "vectorSubtract error: trying to subtract vectors of different size "+a.length+' '+b.length
   return a.map((x,i)=> x-b[i])
 }
 const vectorEquals = (a,b) => JSON.stringify(a) === JSON.stringify(b)
