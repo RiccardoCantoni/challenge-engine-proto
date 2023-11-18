@@ -25,7 +25,7 @@ validateMovement = (v) => {
   return err
 }
 
-checkWon = () => !GAME_MANAGER.getGameoObjectsByTag('sheep')
+checkWon = () => GAME_MANAGER.getGameoObjectsByTag('sheep').length === 0
 
 onLoad = () => {
   setupWorld()
@@ -63,7 +63,7 @@ setupWorld = () => {
     }
     GAME_MANAGER.pixiApp.stage.addChild(graphics)
     // start time
-    GAME_MANAGER.resetTime(300)
+    GAME_MANAGER.resetTime(100)
     GAME_MANAGER.pixiApp.ticker.add(() => GAME_MANAGER.engineTick())    
     init = true
   }
@@ -85,7 +85,7 @@ setupWorld = () => {
   }
   
   //start ticker
-  GAME_MANAGER.resetTime(300)
+  GAME_MANAGER.resetTime(100)
   GAME_MANAGER.gameTick = () => gameTick()
 }
 
@@ -100,7 +100,7 @@ instantiateWorldState = () => {
     p3 = getRandomVector(1,15)
   } while (distance(p1,p2) <= 8 || distance(p1,p3) <= 8 || distance(p3,p2) <= 8)
 
-  GAME_MANAGER.instantiate('flag','./../resources/images/racing-flag.svg', [34,34], p1, false)
+  GAME_MANAGER.instantiate('flag','./../resources/images/racing-flag.svg', [34,34], p1, false, {physical: false})
   GAME_MANAGER.instantiate('dog','./../resources/images/dog.svg', [36,30], p3, true)
   const tmpCache = 
     shuffle(posCache)
@@ -124,38 +124,39 @@ gameTick = () => {
   //update state
   hasMoved = false
   GAME_MANAGER.state.dog.position = GAME_MANAGER.getGameObject('dog').position
-  GAME_MANAGER.state.sheep = []
-  for (let i=0; i<5; i++){
-    GAME_MANAGER.state.sheep.push({position: GAME_MANAGER.getGameObject('sheep'+i).position})
-  }
+  GAME_MANAGER.state.sheep = GAME_MANAGER.getGameoObjectsByTag('sheep').map(s => ({position: s.position}))
 
   try{
     GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
     const dog = GAME_MANAGER.getGameObject('dog')
+    const flag = GAME_MANAGER.getGameObject('flag', false)
     const allSheep = shuffle(GAME_MANAGER.getGameoObjectsByTag('sheep'))
     shuffle(cache1)
-    console.log(dog.position, allSheep[0].position)
-    const sheepMovement = allSheep
-      .map(s => ({
-        go: s,
-        idle: distance(s.position, dog.position) > 2,
-        force: cache1
-        .map(v => vectorSum(v, s.position))
-        .map(v => {console.log(v); return v})
-        .filter(v => isInBoundaries(v, GAME_MANAGER))
-        .filter(v => !vectorEquals(v, dog.position))
-        //if length > 4 exclude distance = 2
-        .filter((v,_,arr) => !(arr.length > 4 && manhattanDistance(v, dog.position) < 2)) 
-        .map(v => vectorSubtract(v, s.position))
-        [0]
-      }))
-      sheepMovement.map(s => {
-        if (s.idle){
-          if (Math.random() < 0.1) GAME_MANAGER.move(s.go.id, randomPick(cache1))
-        } else {
-          GAME_MANAGER.move(s.go.id, s.force)
-        }
-      })
+  const sheepMovement = allSheep
+    .map(s => ({
+      go: s,
+      idle: distance(s.position, dog.position) > 2,
+      movements: distance(s.position, dog.position) > 2 ? [] :
+      cache1
+      .map(v => vectorSum(v, s.position))
+      .filter(v => isInBoundaries(v, GAME_MANAGER))
+      .filter(v => !vectorEquals(v, dog.position))
+      //if length > 4 exclude distance = 2
+      .filter((v,_,arr) => !(arr.length > 4 && manhattanDistance(v, dog.position) < 2)) 
+      .map(v => vectorSubtract(v, s.position))
+    }))
+    sheepMovement.map(s => {
+      if (s.idle){
+        if (Math.random() < 0.1) GAME_MANAGER.move(s.go.id, randomPick(cache1))
+      } else {
+        const tg = s.movements.find(m => vectorEquals(vectorSum(m, s.go.position), flag.position))
+        if (tg) { GAME_MANAGER.move(s.go.id, tg) }
+        else { GAME_MANAGER.move(s.go.id, s.movements[0]) }
+      }
+    })
+    allSheep
+      .filter(s => vectorEquals(s.position, flag.position))
+      .map(s => GAME_MANAGER.deInstantiate(s.id))
   } catch(err){
     console.error('an error occurred while executing your code:', err)
     GAME_MANAGER.time.paused = true
@@ -196,9 +197,8 @@ const onReset = () => {
   PAGE_MANAGER.reset()
   GAME_MANAGER.deInstantiate('dog')
   GAME_MANAGER.deInstantiate('flag', false)
-  for (let i = 0; i<5; i++){
-    GAME_MANAGER.deInstantiate('sheep'+i)
-  }
+  GAME_MANAGER.getGameoObjectsByTag('sheep').map(s => GAME_MANAGER.deInstantiate(s.id))
+
   console.clear()
   setupWorld()
 }

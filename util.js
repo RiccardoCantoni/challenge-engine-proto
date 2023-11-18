@@ -34,6 +34,7 @@ const vectorMagnitude = (a) => {
 const distance = (a,b) => {
   return vectorMagnitude(vectorSubtract(a,b))
 }
+const transpose = v => [v[1],v[0]] //todorc make generic
 
 const manhattanDistance = (a,b) => {
   if ([...a,...b].find(x => !Number.isInteger(x))) throw "error: manhattanDistance() expectes two vectors of integers"
@@ -50,7 +51,7 @@ const coordsToPixels = (coords, engine) => {
   ]
 }
 
-const isInBoundaries = (coords, engine) => (
+const isInBoundaries = (coords, engine = GAME_MANAGER) => (
   coords[0] >= 0 &&
   coords[0] < engine.terrain.size[0] &&
   coords[1] >= 0 &&
@@ -65,7 +66,9 @@ const UTIL = {
   vectorEquals: vectorEquals,
   vectorMultiply: vectorMultiply,
   distance: distance,
+  transpose: transpose,
   manhattanDistance: manhattanDistance,
+  isInBoundaries: isInBoundaries
 }
 
 

@@ -67,6 +67,7 @@ const GAME_MANAGER = {
     const go = this.dynamicObjects.find(o => o.id === id)
     let w = vectorSum(go.position, v)
     if ([...this.dynamicObjects, ...this.staticObjects]
+      .filter(o => o.tags.physical === undefined || o.tags.physical)
       .find(o => vectorEquals(o.position, w))) return
     if (!isInBoundaries(w, this)) return
     go.position = w
