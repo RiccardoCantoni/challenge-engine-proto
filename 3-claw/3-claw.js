@@ -1,9 +1,9 @@
 // todorc utils with doc
 // todorc doc of sheepdog
 
-window.onbeforeunload = function() {
-  return "Data will be lost if you leave the page, are you sure?";
-}
+// window.onbeforeunload = function() {
+//   return "Data will be lost if you leave the page, are you sure?";
+// }
 
 const Player = class {
   position
@@ -34,36 +34,47 @@ hasMoved = false
 posCache = []
 setupWorld = () => {
   if (!init) {
-    for (let i = -2; i<3; i++) {
-      for (let j = -2; j<3; j++) {
-        posCache.push([i,j])
-      }
-    }
     // Init gm
-    GAME_MANAGER.terrain.size = [16,16]
-    GAME_MANAGER.terrain.cellSize = 35 
+    GAME_MANAGER.terrain.size = [10,10]
+    GAME_MANAGER.terrain.cellSize = 50
     const w = GAME_MANAGER.terrain.size[0] * GAME_MANAGER.terrain.cellSize
     GAME_MANAGER.pixiApp = new PIXI.Application({ 
       width:w, 
       height:w, 
       autoStart:true, 
-      background:'#ffffff'
+      background:'#000000'
     })
     PAGE_MANAGER.init(GAME_MANAGER)
     // Draw the world
     const graphics = new PIXI.Graphics()
     graphics.lineStyle(1, '#aeb0af')
-    for (let i = 0; i<= w; i += GAME_MANAGER.terrain.cellSize){
-      graphics.moveTo(i,0)
-      graphics.lineTo(i,w)
-      graphics.moveTo(0,i)
-      graphics.lineTo(w,i)
+    for (let i = GAME_MANAGER.terrain.cellSize; i<w; i += GAME_MANAGER.terrain.cellSize){
+      // graphics.moveTo(i,0)
+      // graphics.lineTo(i,w)
+      // graphics.moveTo(0,i)
+      // graphics.lineTo(w,i)
     }
+
+
     GAME_MANAGER.pixiApp.stage.addChild(graphics)
     // start time
     GAME_MANAGER.resetTime()
     GAME_MANAGER.pixiApp.ticker.add(() => GAME_MANAGER.engineTick())    
     init = true
+
+    GAME_MANAGER.instantiate('1','./../resources/images/white-block.png', [50,50], [0,0], false, {}, '#f5c842')
+    GAME_MANAGER.instantiate('2','./../resources/images/white-block.png', [50,50], [0,1], false, {}, '#32a852')
+    GAME_MANAGER.instantiate('3','./../resources/images/white-block.png', [50,50], [0,2], false, {}, '#c2320e')
+    GAME_MANAGER.instantiate('4','./../resources/images/white-block.png', [50,50], [3,5], false, {}, '#0561eb')
+    GAME_MANAGER.instantiate('5','./../resources/images/frame-white.png', [50,50], [0,9])
+    GAME_MANAGER.instantiate('6','./../resources/images/frame-white.png', [50,50], [1,9])
+    GAME_MANAGER.instantiate('7','./../resources/images/frame-white.png', [50,50], [2,9])
+    GAME_MANAGER.instantiate('8','./../resources/images/frame-white.png', [50,50], [3,9])
+    GAME_MANAGER.instantiate('9','./../resources/images/frame-white.png', [50,50], [4,9])
+    GAME_MANAGER.instantiate('10','./../resources/images/carriage-white.png', [50,50], [3,9])
+    GAME_MANAGER.instantiate('11','./../resources/images/line-white.png', [50,50], [3,8])
+    GAME_MANAGER.instantiate('12','./../resources/images/line-white.png', [50,50], [3,7])
+    GAME_MANAGER.instantiate('13','./../resources/images/claw-active-white.png', [50,50], [3,6])
   }
 
   instantiateWorldState()
