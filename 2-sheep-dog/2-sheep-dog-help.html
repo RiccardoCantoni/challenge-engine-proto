@@ -14,23 +14,26 @@
       <div class="flexColumn" style="width: 40%;">
         <div class="container dark" style="margin-top: 52px;">
           <div class="flexRow">
-            <img src="./../resources/images/shopping-trolley-purple.svg" class="card-icon">
-            <h2> Challenge 1: Groceries</h2>
+            <img src="./../resources/images/sheep-purple.svg" class="card-icon">
+            <h2> Challenge 2: Sheep Dog</h2>
           </div>
-          <p>We start introducing more objects to the environment: a shopping trolley.</br>
-            The shopping trolley can be <i>pushed</i> by the player by moving into it.</br>
-          <p>Push the <i>trolley</i> to the <i>target.</i></p>
-          <p>Since it can't be pulled, be careful not to push the trolley into the edges of the grid, as it will make the challenge unrecoverable.</p>
+          <p>Once again, the goal here is to move in a way that makes <i>something else</i> move to the target.</br>
+          This time it's a herd of sheep.</p>
+          <p>Differently from a shopping cart, they have a mind on their own. They do move away from you, but in an impredictable manner.</br>
+          Sometimes they even move completely on their own when you're far away!
           <p>
-            - In order to push the trolley, simply move the player into it.<br>
             - You can only move up, down, right, or left, one cell at a time.<br>
             - You can only move once per <i>update()</i><br>
-            - The challenge is completed when <i>trolley</i> is in the same position as <i>target</i>.<br>
+            - Sheep will run away from you if you're closer than 2 cells away. The exact direction they pick tends to be "away from you", but it's randomised.<br>
+            - Sheep have a 10% chance of moving randomly when youre further than 2 cells away.<br>
+            - Once a sheep moves onto the target, it is removed from the board.<br>
+            - The challenge is completed when there are no more sheep.<br>
+            - Given the size of the board there is now the option to run the challenge at a faster speed.<br>
             - <i>state.U</i> is an object exposing a number of utility methods for doing mathematical operations on vectors. You won't necessarily need to use any of them, but a brief documentation can be accessed from the challenge page though the <i>Utils</i> link.
           </p>
           <div style="display: flex; align-items: center; justify-content: center;">
             <button class="button" id="buttonHome" onclick="window.open('./../index.html','_self')">Home</button>
-            <button class="button" id="buttonHome" onclick="window.open('1-groceries.html','_self')">Start</button>
+            <button class="button" id="buttonHome" onclick="window.open('2-sheep-dog.html','_self')">Start</button>
           </div>
         </div>
       </div>

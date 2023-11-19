@@ -1,5 +1,4 @@
 // todorc utils with doc
-// todorc doc of sheepdog
 
 window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
