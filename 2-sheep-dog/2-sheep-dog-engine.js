@@ -4,7 +4,7 @@ const GAME_MANAGER = {
     cellSize: 0
   },
   time: {
-    gameTick: undefined,
+    gameTick: 300,
     elapsed: undefined,
     lastGameTick: undefined,
     tickNumber: 0,
@@ -15,8 +15,7 @@ const GAME_MANAGER = {
   staticObjects: [],
   pixiApp: undefined,
 
-  resetTime (frameTime) {
-    this.time.gameTick = frameTime
+  resetTime () {
     this.time.elapsed = new Date().getTime()
     this.time.lastGameTick = this.time.elapsed
     this.time.tickNumber = 0

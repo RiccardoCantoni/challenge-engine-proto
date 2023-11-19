@@ -2,6 +2,7 @@ PAGE_MANAGER = {
   didEval: false,
   init (gm) {
     this.buttonRun = document.getElementById('buttonRun')
+    this.buttonRunFast = document.getElementById('buttonRunFast')
     this.buttonStep = document.getElementById('buttonStep')
     this.buttonReset = document.getElementById('buttonReset')
     this.editor = ace.edit('editor')
@@ -21,12 +22,23 @@ PAGE_MANAGER = {
   run () {
     this.buttonRun.classList.add('buttonPressed')
     this.buttonStep.disabled = true
+    this.buttonRunFast.disabled = true
+    this.editor.setReadOnly(true)
+    this.editorDiv.classList.add('disabled')
+  },
+  runFast () {
+    this.buttonRunFast.classList.add('buttonPressed')
+    this.buttonStep.disabled = true
+    this.buttonRun.disabled = true
     this.editor.setReadOnly(true)
     this.editorDiv.classList.add('disabled')
   },
   pause () {
     this.buttonRun.classList.remove('buttonPressed')
+    this.buttonRunFast.classList.remove('buttonPressed')
     this.buttonStep.disabled = false
+    this.buttonRun.disabled = false
+    this.buttonRunFast.disabled = false
   },
   stop () {
     this.buttonRun.classList.remove('buttonPressed')

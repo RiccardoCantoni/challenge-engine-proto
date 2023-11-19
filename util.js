@@ -34,7 +34,11 @@ const vectorMagnitude = (a) => {
 const distance = (a,b) => {
   return vectorMagnitude(vectorSubtract(a,b))
 }
-const transpose = v => [v[1],v[0]] //todorc make generic
+const transpose = v => {
+  let v2 = []
+  v.forEach((_,i) => { v2.push(v[v.length-1-i])})
+  return v2
+}
 
 const manhattanDistance = (a,b) => {
   if ([...a,...b].find(x => !Number.isInteger(x))) throw "error: manhattanDistance() expectes two vectors of integers"

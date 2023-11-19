@@ -1,5 +1,5 @@
 // todorc utils with doc
-// todorc add fast-forward button
+// todorc doc of sheepdog
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
@@ -61,7 +61,7 @@ setupWorld = () => {
     }
     GAME_MANAGER.pixiApp.stage.addChild(graphics)
     // start time
-    GAME_MANAGER.resetTime(100)
+    GAME_MANAGER.resetTime()
     GAME_MANAGER.pixiApp.ticker.add(() => GAME_MANAGER.engineTick())    
     init = true
   }
@@ -83,7 +83,7 @@ setupWorld = () => {
   }
   
   //start ticker
-  GAME_MANAGER.resetTime(100)
+  GAME_MANAGER.resetTime()
   GAME_MANAGER.gameTick = () => gameTick()
 }
 
@@ -168,17 +168,24 @@ gameTick = () => {
   }
 }
 
-const onRun = () => {
+const onRun = (t = 300) => {
   hasMoved = false
+  GAME_MANAGER.time.gameTick = t
   GAME_MANAGER.time.paused = !GAME_MANAGER.time.paused
   if(GAME_MANAGER.time.paused) {
     PAGE_MANAGER.pause()
-  } else {
+  } else if (t === 300){
     PAGE_MANAGER.run()
+  } else {
+    PAGE_MANAGER.runFast()
   }
   if (GAME_MANAGER.time.paused) return
   PAGE_MANAGER.evalCode()
   GAME_MANAGER.time.lastGameTick = GAME_MANAGER.time.elapsed
+}
+
+const onRunFast = () => {
+  onRun(100)
 }
 
 const onStep = () => {
