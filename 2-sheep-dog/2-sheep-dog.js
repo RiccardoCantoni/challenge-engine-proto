@@ -1,5 +1,5 @@
 // todorc utils with doc
-// todorc move cache to util
+// todorc add fast-forward button
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
@@ -9,8 +9,6 @@ const Player = class {
   position
   move
 }
-
-const cache1 = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
 
 const valid = new Set([-1,0,1])
 validateMovement = (v) => {
