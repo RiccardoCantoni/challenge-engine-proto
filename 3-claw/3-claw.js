@@ -1,11 +1,10 @@
 // todorc utils with doc
-//todorc remove new Player() from all states
-//todorc disallow placing outside boundaries
+// todorc remove new Player() from all states
 // todorc edit placeholder texts to show that othercode can be written
 
-// window.onbeforeunload = function() {
-//   return "Data will be lost if you leave the page, are you sure?";
-// }
+window.onbeforeunload = function() {
+  return "Data will be lost if you leave the page, are you sure?";
+}
 
 let colors = [
   { id: 'Y', color: '#f5c842' }, 
@@ -13,17 +12,6 @@ let colors = [
   { id: 'R', color: '#c2320e' }, 
   { id: 'B', color: '#0561eb' }
 ]
-
-const valid = new Set([-1,0,1])
-validateMovement = (m) => {
-  let err 
-  if (hasMoved) {
-    err = 'invalid movement: you can only move once per update()'
-  } else if (!valid.has(m)) {
-    err = 'invalid movement: valid movements are -1,0,1'
-  }
-  return err
-}
 
 checkWon = () => false
 
@@ -54,7 +42,18 @@ setupWorld = () => {
     graphics.beginFill(0x000000);
     graphics.drawRect(0, 0, GAME_MANAGER.terrain.cellSize*5, GAME_MANAGER.terrain.cellSize*GAME_MANAGER.terrain.size[1]);
     graphics.endFill();
+    graphics.lineStyle(1, '#2d2d2d')
+    graphics.moveTo(GAME_MANAGER.terrain.cellSize,10*GAME_MANAGER.terrain.cellSize)
+    graphics.lineTo(GAME_MANAGER.terrain.cellSize,4*GAME_MANAGER.terrain.cellSize)
+    graphics.lineTo(4*GAME_MANAGER.terrain.cellSize,4*GAME_MANAGER.terrain.cellSize)
+    graphics.lineTo(4*GAME_MANAGER.terrain.cellSize,10*GAME_MANAGER.terrain.cellSize)
+
+
     GAME_MANAGER.pixiApp.stage.addChild(graphics)
+
+
+    GAME_MANAGER.pixiApp.stage.addChild(graphics)
+
 
     const reproduce = new PIXI.Text('Reference', new PIXI.TextStyle(textHighlightStyle))
     reproduce.x = 320;
@@ -72,12 +71,13 @@ setupWorld = () => {
   // set Move
   GAME_MANAGER.wrappers.move = (m) => {
     if (PAGE_MANAGER.didEval) {
-      const err = validateMovement(m)
+      const err = 
+        hasMoved ? 'invalid movement: you can only move once per update()' :
+          hasToggled ? 'invalid input: you can not move and toggle in the same update()' :
+            ![-1,0,1].find(x => x=== m) ? 'invalid movement: valid movements are -1,0,1'
+              : null
       if (err) {
-        PAGE_MANAGER.didEval = false
-        GAME_MANAGER.time.paused = true
-        console.error(err)
-        PAGE_MANAGER.stop()
+        notifyError(err)
         return
       }
     }
@@ -104,10 +104,7 @@ setupWorld = () => {
         hasToggled ? 'invalid input: you can only toggle once per update()' : 
           hasMoved ? 'invalid input: you can not move and toggle in the same update()' : null
       if (err) {
-        PAGE_MANAGER.didEval = false
-        GAME_MANAGER.time.paused = true
-        console.error(err)
-        PAGE_MANAGER.stop()
+        notifyError(err)
         return
       }
     }
@@ -128,6 +125,11 @@ setupWorld = () => {
       claw.tags.block = blockUnder.id
       GAME_MANAGER.state.claw.block = blockUnder.id
     } else { //release
+      if (
+        claw.position === 0 || claw.position === 4 || blockUnder.position[1] === 5) {
+        notifyError('invalid toggle: you can\'t release blocks outside the allowed area')
+        return
+      }
       GAME_MANAGER.translateTo(claw.id, [blockUnder.position[0], blockUnder.position[1]+2])
       GAME_MANAGER.translateTo(claw.tags.block, [blockUnder.position[0], blockUnder.position[1]+1])
       const lineLength = 6-blockUnder.position[1]
@@ -147,11 +149,13 @@ setupWorld = () => {
 
 instantiateWorldState = () => {
   //instantiate stuff
-  GAME_MANAGER.instantiate('_f1','./../resources/images/frame-white.png', [50,50], [0,9], false, {physical:false})
-  GAME_MANAGER.instantiate('_f2','./../resources/images/frame-white.png', [50,50], [1,9], false, {physical:false})
-  GAME_MANAGER.instantiate('_f3','./../resources/images/frame-white.png', [50,50], [2,9], false, {physical:false})
-  GAME_MANAGER.instantiate('_f4','./../resources/images/frame-white.png', [50,50], [3,9], false, {physical:false})
-  GAME_MANAGER.instantiate('_f5','./../resources/images/frame-white.png', [50,50], [4,9], false, {physical:false})
+  if (!GAME_MANAGER.getGameObject('_f1', false)) {
+    GAME_MANAGER.instantiate('_f1','./../resources/images/frame-white.png', [50,50], [0,9], false, {physical:false})
+    GAME_MANAGER.instantiate('_f2','./../resources/images/frame-white.png', [50,50], [1,9], false, {physical:false})
+    GAME_MANAGER.instantiate('_f3','./../resources/images/frame-white.png', [50,50], [2,9], false, {physical:false})
+    GAME_MANAGER.instantiate('_f4','./../resources/images/frame-white.png', [50,50], [3,9], false, {physical:false})
+    GAME_MANAGER.instantiate('_f5','./../resources/images/frame-white.png', [50,50], [4,9], false, {physical:false})
+  }
   GAME_MANAGER.instantiate('claw-root','./../resources/images/carriage-white.png', [50,50], [0,9])
   GAME_MANAGER.instantiate('claw-line','./../resources/images/line-white.png', [50,0], [0,8], true, {physical:false})
   GAME_MANAGER.instantiate('claw','./../resources/images/claw-idle-white.png', [50,50], [0,8], {block:null})
@@ -279,4 +283,11 @@ const onReset = () => {
 
 const onSubmit = () => {
   PAGE_MANAGER.submit('2-SheepDog')
+}
+
+const notifyError = (err) => {
+  PAGE_MANAGER.didEval = false
+  GAME_MANAGER.time.paused = true
+  console.error(err)
+  PAGE_MANAGER.stop()
 }
