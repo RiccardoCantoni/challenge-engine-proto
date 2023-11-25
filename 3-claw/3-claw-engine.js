@@ -76,9 +76,22 @@ const GAME_MANAGER = {
     if (v[0] < 0 && go.sprite.scale.x > 0) go.sprite.scale.x *= -1
   },
 
+  translateTo (id, w) {
+    const go = this.dynamicObjects.find(o => o.id === id)
+    if ([...this.dynamicObjects, ...this.staticObjects]
+      .filter(o => o.tags.physical === undefined || o.tags.physical)
+      .find(o => vectorEquals(o.position, w))) return
+    if (!isInBoundaries(w, this)) return
+    go.position = w
+    w = coordsToPixels(w, this)
+    go.sprite.x = w[0]
+    go.sprite.y = w[1]
+  },
+
   wrappers: {
     consoleLog: console.log,
     move: () => {},
+    toggle: () => {},
     update: () => {}
   },
   worldState: {},
