@@ -1,29 +1,29 @@
 // todorc utils with doc
-// todorc doc of sheepdog
+//todorc remove new Player() from all states
 
 // window.onbeforeunload = function() {
 //   return "Data will be lost if you leave the page, are you sure?";
 // }
 
-const Player = class {
-  position
-  move
-}
+let colors = [
+  { id: 'Y', color: '#f5c842' }, 
+  { id: 'G', color: '#32a852' }, 
+  { id: 'R', color: '#c2320e' }, 
+  { id: 'B', color: '#0561eb' }
+]
 
 const valid = new Set([-1,0,1])
-validateMovement = (v) => {
+validateMovement = (m) => {
   let err 
   if (hasMoved) {
     err = 'invalid movement: you can only move once per update()'
-  } else if (!Array.isArray(v) || v.length !== 2) {
-    err = 'invalid movement: ' + v + ' \n vector of length 2 expected'
-  } else if (v.some(x => !valid.has(x)) || !v.some(x => x === 0)) {
-    err = 'invalid movement: ' + v + ' \n vector of magnitude 1'
+  } else if (!valid.has(m)) {
+    err = 'invalid movement: valid movements are -1,0,1'
   }
   return err
 }
 
-checkWon = () => GAME_MANAGER.getGameoObjectsByTag('sheep').length === 0
+checkWon = () => false
 
 onLoad = () => {
   setupWorld()
@@ -31,7 +31,6 @@ onLoad = () => {
 
 init = false
 hasMoved = false
-posCache = []
 setupWorld = () => {
   if (!init) {
     // Init gm
@@ -42,45 +41,33 @@ setupWorld = () => {
       width:w, 
       height:w, 
       autoStart:true, 
-      background:'#000000'
+      backgroundAlpha: 0,
+      antialias: true
     })
     PAGE_MANAGER.init(GAME_MANAGER)
+
     // Draw the world
     const graphics = new PIXI.Graphics()
-    graphics.lineStyle(1, '#aeb0af')
-    for (let i = GAME_MANAGER.terrain.cellSize; i<w; i += GAME_MANAGER.terrain.cellSize){
-      // graphics.moveTo(i,0)
-      // graphics.lineTo(i,w)
-      // graphics.moveTo(0,i)
-      // graphics.lineTo(w,i)
-    }
-
-
+    graphics.beginFill(0x000000);
+    graphics.drawRect(0, 0, GAME_MANAGER.terrain.cellSize*5, GAME_MANAGER.terrain.cellSize*GAME_MANAGER.terrain.size[1]);
+    graphics.endFill();
     GAME_MANAGER.pixiApp.stage.addChild(graphics)
+
+    const reproduce = new PIXI.Text('Reproduce this', new PIXI.TextStyle(textHighlightStyle))
+    reproduce.x = 290;
+    reproduce.y = 250;
+    GAME_MANAGER.pixiApp.stage.addChild(reproduce);
+
     // start time
     GAME_MANAGER.resetTime()
     GAME_MANAGER.pixiApp.ticker.add(() => GAME_MANAGER.engineTick())    
     init = true
-
-    GAME_MANAGER.instantiate('1','./../resources/images/white-block.png', [50,50], [0,0], false, {}, '#f5c842')
-    GAME_MANAGER.instantiate('2','./../resources/images/white-block.png', [50,50], [0,1], false, {}, '#32a852')
-    GAME_MANAGER.instantiate('3','./../resources/images/white-block.png', [50,50], [0,2], false, {}, '#c2320e')
-    GAME_MANAGER.instantiate('4','./../resources/images/white-block.png', [50,50], [3,5], false, {}, '#0561eb')
-    GAME_MANAGER.instantiate('5','./../resources/images/frame-white.png', [50,50], [0,9])
-    GAME_MANAGER.instantiate('6','./../resources/images/frame-white.png', [50,50], [1,9])
-    GAME_MANAGER.instantiate('7','./../resources/images/frame-white.png', [50,50], [2,9])
-    GAME_MANAGER.instantiate('8','./../resources/images/frame-white.png', [50,50], [3,9])
-    GAME_MANAGER.instantiate('9','./../resources/images/frame-white.png', [50,50], [4,9])
-    GAME_MANAGER.instantiate('10','./../resources/images/carriage-white.png', [50,50], [3,9])
-    GAME_MANAGER.instantiate('11','./../resources/images/line-white.png', [50,50], [3,8])
-    GAME_MANAGER.instantiate('12','./../resources/images/line-white.png', [50,50], [3,7])
-    GAME_MANAGER.instantiate('13','./../resources/images/claw-active-white.png', [50,50], [3,6])
   }
 
   instantiateWorldState()
-  GAME_MANAGER.wrappers.move = (v) => {
+  GAME_MANAGER.wrappers.move = (m) => {
     if (PAGE_MANAGER.didEval) {
-      const err = validateMovement(v)
+      const err = validateMovement(m)
       if (err) {
         PAGE_MANAGER.didEval = false
         GAME_MANAGER.time.paused = true
@@ -89,7 +76,9 @@ setupWorld = () => {
         return
       }
     }
-    GAME_MANAGER.move('dog', v)
+    GAME_MANAGER.move('claw-root', [m,0])
+    GAME_MANAGER.move('claw-line', [m,0])
+    GAME_MANAGER.move('claw', [m,0])
     hasMoved = true
   }
   
@@ -99,73 +88,76 @@ setupWorld = () => {
 }
 
 instantiateWorldState = () => {
-  // Instantiate stuff
-  let p1 = [0,0]
-  let p2 = [0,0]
-  let p3 = [0,0]
-  do {
-    p1 = getRandomVector(1,15)
-    p2 = getRandomVector(1,15)
-    p3 = getRandomVector(1,15)
-  } while (distance(p1,p2) <= 8 || distance(p1,p3) <= 8 || distance(p3,p2) <= 8)
-
-  GAME_MANAGER.instantiate('flag','./../resources/images/racing-flag.svg', [34,34], p1, false, {physical: false})
-  GAME_MANAGER.instantiate('dog','./../resources/images/dog.svg', [36,30], p3, true)
-  const tmpCache = 
-    shuffle(posCache)
-    .map(p => vectorSum(p,p2))
-    .filter(p => isInBoundaries(p, GAME_MANAGER))
-  const sheep = []
-  for (let i = 0; i<5; i++){
-    sheep.push(GAME_MANAGER.instantiate('sheep'+i,'./../resources/images/sheep.svg', [33,26], tmpCache[i], true, {sheep:true}))
+  //instantiate stuff
+  GAME_MANAGER.instantiate('_f1','./../resources/images/frame-white.png', [50,50], [0,9], false, {physical:false})
+  GAME_MANAGER.instantiate('_f2','./../resources/images/frame-white.png', [50,50], [1,9], false, {physical:false})
+  GAME_MANAGER.instantiate('_f3','./../resources/images/frame-white.png', [50,50], [2,9], false, {physical:false})
+  GAME_MANAGER.instantiate('_f4','./../resources/images/frame-white.png', [50,50], [3,9], false, {physical:false})
+  GAME_MANAGER.instantiate('_f5','./../resources/images/frame-white.png', [50,50], [4,9], false, {physical:false})
+  GAME_MANAGER.instantiate('claw-root','./../resources/images/carriage-white.png', [50,50], [0,9])
+  GAME_MANAGER.instantiate('claw-line','./../resources/images/line-white.png', [0,0], [0,8])
+  GAME_MANAGER.instantiate('claw','./../resources/images/claw-idle-white.png', [50,50], [0,8])
+  
+  colors = shuffle(colors)
+  blocks = []
+  for (let x=0; x<3; x++){
+    for (let y=0; y<3; y++){
+      blocks.push(colors[x])
+    }
   }
 
+  targetBlocks = [...shuffle(blocks)]
+  cache1.forEach((v,i) => {
+    GAME_MANAGER.instantiate(
+      'ref'+i,
+      './../resources/images/white-block.png',
+      [50,50],
+      vectorSum(v,[7,2]), 
+      false,
+      {physical: false},
+      targetBlocks[i].color
+    )}
+  )
+
+  blocks = shuffle(blocks)
+  cache1.forEach((v,i) => {
+    GAME_MANAGER.instantiate(
+      'block'+i,
+      './../resources/images/white-block.png',
+      [50,50],
+      vectorSum(v,[2,1]), 
+      false,
+      {physical: false},
+      blocks[i].color
+    )}
+  )
+
   // initial state & actions
+  console.log(blocks)
   GAME_MANAGER.state = {
     u: UTIL,
-    dog: {...new Player(), position: p3, move: (v) => GAME_MANAGER.wrappers.move(v) },
-    target: {position: p1},
-    sheep: sheep.map(s =>({position:s.position}))
+    claw: {position: 0, move: (v) => GAME_MANAGER.wrappers.move(v) },
+    blocks: blocks.map((b,i) => ({
+      color: colors.find(c => c.id === b.id).id,
+      position: [Math.floor(i/3),i%3]
+    })),
+    target: targetBlocks.map((b,i) => ({
+      color: colors.find(c => c.id === b.id).id,
+      position: [Math.floor(i/3),i%3]
+    }))
   }
 }
 
 gameTick = () => {
   //update state
   hasMoved = false
-  GAME_MANAGER.state.dog.position = GAME_MANAGER.getGameObject('dog').position
-  GAME_MANAGER.state.sheep = GAME_MANAGER.getGameoObjectsByTag('sheep').map(s => ({position: s.position}))
+  
+  // GAME_MANAGER.state.dog.position = GAME_MANAGER.getGameObject('claw').position
+  // GAME_MANAGER.state.sheep = GAME_MANAGER.getGameoObjectsByTag('sheep').map(s => ({position: s.position}))
 
   try{
     GAME_MANAGER.wrappers.update(GAME_MANAGER.state)
-    const dog = GAME_MANAGER.getGameObject('dog')
-    const flag = GAME_MANAGER.getGameObject('flag', false)
-    const allSheep = shuffle(GAME_MANAGER.getGameoObjectsByTag('sheep'))
-    shuffle(cache1)
-  const sheepMovement = allSheep
-    .map(s => ({
-      go: s,
-      idle: distance(s.position, dog.position) > 2,
-      movements: distance(s.position, dog.position) > 2 ? [] :
-      cache1
-      .map(v => vectorSum(v, s.position))
-      .filter(v => isInBoundaries(v, GAME_MANAGER))
-      .filter(v => !vectorEquals(v, dog.position))
-      //if length > 4 exclude distance = 2
-      .filter((v,_,arr) => !(arr.length > 4 && manhattanDistance(v, dog.position) < 2)) 
-      .map(v => vectorSubtract(v, s.position))
-    }))
-    sheepMovement.map(s => {
-      if (s.idle){
-        if (Math.random() < 0.1) GAME_MANAGER.move(s.go.id, randomPick(cache1))
-      } else {
-        const tg = s.movements.find(m => vectorEquals(vectorSum(m, s.go.position), flag.position))
-        if (tg) { GAME_MANAGER.move(s.go.id, tg) }
-        else { GAME_MANAGER.move(s.go.id, s.movements[0]) }
-      }
-    })
-    allSheep
-      .filter(s => vectorEquals(s.position, flag.position))
-      .map(s => GAME_MANAGER.deInstantiate(s.id))
+    
   } catch(err){
     console.error('an error occurred while executing your code:', err)
     GAME_MANAGER.time.paused = true
@@ -211,9 +203,11 @@ const onReset = () => {
   hasMoved = false
   GAME_MANAGER.time.paused = true
   PAGE_MANAGER.reset()
-  GAME_MANAGER.deInstantiate('dog')
-  GAME_MANAGER.deInstantiate('flag', false)
-  GAME_MANAGER.getGameoObjectsByTag('sheep').map(s => GAME_MANAGER.deInstantiate(s.id))
+  GAME_MANAGER.deInstantiate('claw')
+  GAME_MANAGER.deInstantiate('claw-line')
+  GAME_MANAGER.deInstantiate('claw-root')
+  // GAME_MANAGER.deInstantiate('flag', false)
+  // GAME_MANAGER.getGameoObjectsByTag('sheep').map(s => GAME_MANAGER.deInstantiate(s.id))
 
   console.clear()
   setupWorld()

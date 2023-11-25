@@ -70,6 +70,12 @@ const cache2 = [
   [-2,2],[-1,2],[0,2],[1,2],[2,2]
 ]
 
+const textHighlightStyle = {
+  fill:['#dee8cf'],
+  fontFamily: ['Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro'],
+  fontSize: 20
+}
+
 const UTIL = {
   clamp: clamp,
   lerp1d: lerp1d,

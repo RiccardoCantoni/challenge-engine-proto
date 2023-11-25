@@ -51,6 +51,8 @@ PAGE_MANAGER = {
     this.buttonStep.disabled = false
     this.buttonRun.disabled = false
     this.buttonRun.classList.remove('buttonPressed')
+    this.buttonRunFast.disabled = false
+    this.buttonRunFast.classList.remove('buttonPressed')
     this.editor.setReadOnly(false)
     this.editorDiv.classList.remove('disabled')
     this.modal.style.display = 'none'
