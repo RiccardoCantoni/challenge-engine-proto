@@ -1,4 +1,5 @@
 // todorc utils with doc
+//todorc cookies
 // todorc remove new Player() from all states
 // todorc edit placeholder texts to show that othercode can be written
 
@@ -86,6 +87,7 @@ setupWorld = () => {
     if (v[0]<0 || v[0]>4) return
     GAME_MANAGER.translateTo('claw', [claw.position[0], 8])
     GAME_MANAGER.move('claw-root', [m,0])
+    GAME_MANAGER.getGameObject('claw-line').sprite.height = 0
     GAME_MANAGER.move('claw-line', [m,0])
     GAME_MANAGER.move('claw', [m,0])
     if (claw.tags.block) {
@@ -115,9 +117,9 @@ setupWorld = () => {
       .filter(o => o.position[0] === claw.position[0])
       .sort((o1,o2) => o2.position[1] - o1.position[1])
       [0]
-    if (!blockUnder) return
 
     if (!claw.tags.block) { //grab
+      if (!blockUnder) return
       GAME_MANAGER.translateTo(claw.id, [blockUnder.position[0], 8])
       GAME_MANAGER.translateTo(blockUnder.id, [blockUnder.position[0], 7])
       GAME_MANAGER.state.blocks.find(b => b.id === blockUnder.id).position = blockUnder.position
@@ -126,10 +128,11 @@ setupWorld = () => {
       GAME_MANAGER.state.claw.block = blockUnder.id
     } else { //release
       if (
-        claw.position === 0 || claw.position === 4 || blockUnder.position[1] === 5) {
-        notifyError('invalid toggle: you can\'t release blocks outside the allowed area')
+        claw.position === 0 || claw.position === 4 || (blockUnder && blockUnder.position[1] === 5)) {
+        notifyError('invalid toggle: you can\'t place blocks outside the allowed area')
         return
       }
+      if (!blockUnder) blockUnder = {position:[claw.position[0], -1]}
       GAME_MANAGER.translateTo(claw.id, [blockUnder.position[0], blockUnder.position[1]+2])
       GAME_MANAGER.translateTo(claw.tags.block, [blockUnder.position[0], blockUnder.position[1]+1])
       const lineLength = 6-blockUnder.position[1]
