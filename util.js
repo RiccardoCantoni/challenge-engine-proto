@@ -86,8 +86,7 @@ const UTIL = {
   vectorMultiply: vectorMultiply,
   distance: distance,
   transpose: transpose,
-  manhattanDistance: manhattanDistance,
-  isInBoundaries: isInBoundaries
+  manhattanDistance: manhattanDistance
 }
 
 

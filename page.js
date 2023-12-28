@@ -15,46 +15,52 @@ PAGE_MANAGER = {
     document.getElementById('pixi').style.height = gm.terrain.size[1] * gm.terrain.cellSize
     document.getElementById('pixi').style.width = gm.terrain.size[0] * gm.terrain.cellSize
   },
+  enableButtons(buttons){
+    buttons.forEach(b => { if(this[b]) this[b].disabled = false })
+  },
+  disableButtons(buttons){
+    buttons.forEach(b => { if(this[b]) this[b].disabled = true })
+  },
+  pressButtons(buttons){
+    buttons.forEach(b => { if(this[b]) this[b].classList.add('buttonPressed') })
+  },
+  unpressButtons(buttons){
+    buttons.forEach(b => { if(this[b]) this[b].classList.remove('buttonPressed') })
+  },
+  setEditorEnabled(enabled) {
+    this.editor.setReadOnly(!enabled)
+    if (enabled) {
+      this.editorDiv.classList.remove('disabled')
+    } else {
+      this.editorDiv.classList.add('disabled')
+    }
+  },
   step () {
-    this.editor.setReadOnly(true)
-    this.editorDiv.classList.add('disabled')
+    this.setEditorEnabled(false)
   },
   run () {
-    this.buttonRun.classList.add('buttonPressed')
-    this.buttonStep.disabled = true
-    this.buttonRunFast.disabled = true
-    this.editor.setReadOnly(true)
-    this.editorDiv.classList.add('disabled')
+    this.pressButtons(['buttonRun'])
+    this.disableButtons(['buttonStep','buttonRunFast'])
+    this.setEditorEnabled(false)
   },
   runFast () {
-    this.buttonRunFast.classList.add('buttonPressed')
-    this.buttonStep.disabled = true
-    this.buttonRun.disabled = true
-    this.editor.setReadOnly(true)
-    this.editorDiv.classList.add('disabled')
+    this.pressButtons(['buttonRunFast'])
+    this.disableButtons(['buttonStep', 'buttonRun'])
+    this.setEditorEnabled(false)
   },
   pause () {
-    this.buttonRun.classList.remove('buttonPressed')
-    this.buttonRunFast.classList.remove('buttonPressed')
-    this.buttonStep.disabled = false
-    this.buttonRun.disabled = false
-    this.buttonRunFast.disabled = false
+    this.unpressButtons(['buttonRun','buttonRunFast', 'buttonStep'])
+    this.enableButtons(['buttonStep','buttonRun','buttonRunFast'])
   },
   stop () {
-    this.buttonRun.classList.remove('buttonPressed')
-    this.buttonRun.disabled = true
-    this.buttonStep.classList.remove('buttonPressed')
-    this.buttonStep.disabled = true
+    this.unpressButtons(['buttonRun','buttonStep'])
+    this.disableButtons(['buttonRun','buttonStep'])
   },
   reset () {
     this.didEval = false
-    this.buttonStep.disabled = false
-    this.buttonRun.disabled = false
-    this.buttonRun.classList.remove('buttonPressed')
-    this.buttonRunFast.disabled = false
-    this.buttonRunFast.classList.remove('buttonPressed')
-    this.editor.setReadOnly(false)
-    this.editorDiv.classList.remove('disabled')
+    this.enableButtons(['buttonStep','buttonRun','buttonRunFast'])
+    this.unpressButtons(['buttonStep','buttonRun','buttonRunFast'])
+    this.setEditorEnabled(true)
     this.modal.style.display = 'none'
   },
   evalCode () {

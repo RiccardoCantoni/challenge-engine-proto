@@ -1,7 +1,8 @@
-// todorc utils with doc
-//todorc cookies
+// todorc index intro of claw & help page
+// todorc cookies
 // todorc remove new Player() from all states
 // todorc edit placeholder texts to show that othercode can be written
+// checkWon
 
 window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
