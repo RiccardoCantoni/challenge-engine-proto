@@ -14,7 +14,13 @@ let colors = [
   { id: 'B', color: '#0561eb' }
 ]
 
-checkWon = () => false
+checkWon = () => {
+  const ordBlocks = GAME_MANAGER.state.blocks
+    .sort((a,b) => (a.position[0] - b.position[0]) ? (a.position[0] - b.position[0]) : (a.position[1] - b.position[1]))
+  const ordTarget = GAME_MANAGER.state.target
+    .sort((a,b) => (a.position[0] - b.position[0]) ? (a.position[0] - b.position[0]) : (a.position[1] - b.position[1]))
+  return !ordBlocks.find((b,i) => ordTarget[i].color !== b.color || !vectorEquals(b.position, ordTarget[i].position))
+}
 
 onLoad = () => {
   setupWorld()
