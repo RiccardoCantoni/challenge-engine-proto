@@ -2,11 +2,6 @@ window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
 }
 
-const Player = class {
-  position
-  move
-}
-
 init = false
 hasMoved = false
 setupWorld = () => {
@@ -86,7 +81,7 @@ instantiateWorldState = () => {
 
   // initial state & actions
   GAME_MANAGER.state = {
-    player: {...new Player(), position: p1, move: (v) => GAME_MANAGER.wrappers.move(v) },
+    player: { position: p1, move: (v) => GAME_MANAGER.wrappers.move(v) },
     target: {position: p2}
   }
 }

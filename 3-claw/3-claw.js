@@ -1,6 +1,5 @@
 // todorc index intro of claw & help page
 // todorc cookies
-// todorc remove new Player() from all states
 // todorc edit placeholder texts to show that othercode can be written
 // checkWon
 

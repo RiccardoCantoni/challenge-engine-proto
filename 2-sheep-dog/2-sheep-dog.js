@@ -2,11 +2,6 @@ window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
 }
 
-const Player = class {
-  position
-  move
-}
-
 const valid = new Set([-1,0,1])
 validateMovement = (v) => {
   let err 
@@ -109,7 +104,7 @@ instantiateWorldState = () => {
   // initial state & actions
   GAME_MANAGER.state = {
     u: UTIL,
-    dog: {...new Player(), position: p3, move: (v) => GAME_MANAGER.wrappers.move(v) },
+    dog: { position: p3, move: (v) => GAME_MANAGER.wrappers.move(v) },
     target: {position: p1},
     sheep: sheep.map(s =>({position:s.position}))
   }
