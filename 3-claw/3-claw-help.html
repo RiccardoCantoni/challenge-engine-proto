@@ -14,23 +14,26 @@
       <div class="flexColumn" style="width: 40%;">
         <div class="container dark" style="margin-top: 52px;">
           <div class="flexRow">
-            <img src="./../resources/images/shopping-trolley-purple.svg" class="card-icon">
-            <h2> Challenge 1: Groceries</h2>
+            <img src="./../resources/images/claw-idle-purple.png" class="card-icon">
+            <h2> Challenge 3: Claw Machine</h2>
           </div>
-          <p>We start introducing more objects to the environment: a shopping trolley.</br>
-            The shopping trolley can be <i>pushed</i> by the player by moving into it.</br>
-          <p>Push the <i>trolley</i> to the <i>target.</i></p>
-          <p>Since it can't be pulled, be careful not to push the trolley into the edges of the grid, as it will make the challenge unrecoverable.</p>
+          <p>Change of scenery: this time you will be controlling a mechanical claw.</br> 
+            Not only it moves, but it can also pick-up, transport and release coloured blocks.</p>
+          <p>Re-arrange the blocks until they are in the same order as the reference stack.</p>
+          <p>The claw has a <i>move()</i> method which works left-to-right and a <i>toggle()</i> method which picks up or releases a block.</p>
+          <p>Blocks can only be placed within the allowed 3x6 area (it has a thin grey outline).</p>
+          <p>The state also contains two arrays: <i>blocks</i> and <i>target</i>, that hold the movable blocks in the main game area, and the reference blocks, respectively.</p>
           <p>
-            - In order to push the trolley, simply move the player into it.<br>
-            - You can only move up, down, right, or left, one cell at a time.<br>
-            - You can only move once per <i>update()</i><br>
-            - The challenge is completed when <i>trolley</i> is in the same position as <i>target</i>.<br>
+            - You can move the claw, left or right, one cell at a time.<br>
+            - You can only move once per <i>update()</i>.<br>
+            - You can only toggle once per <i>update()</i>.<br>
+            - You cannot move and toggle in the same <i>update()</i>.<br>
+            - The challenge is completed when <i>blocks</i> represents the same color arrangement as <i>target</i>.<br>
             - <i>state.U</i> is an object exposing a number of utility methods for doing mathematical operations on vectors. You won't necessarily need to use any of them, but a brief documentation can be accessed from the challenge page though the <i>Utils</i> link.
           </p>
           <div style="display: flex; align-items: center; justify-content: center;">
             <button class="button" id="buttonHome" onclick="window.open('./../index.html','_self')">Home</button>
-            <button class="button" id="buttonHome" onclick="window.open('1-groceries.html','_self')">Start</button>
+            <button class="button" id="buttonHome" onclick="window.open('3-claw.html','_self')">Start</button>
           </div>
         </div>
       </div>

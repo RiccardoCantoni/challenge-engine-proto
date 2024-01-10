@@ -1,7 +1,6 @@
-// todorc index intro of claw & help page
 // todorc cookies
 // todorc edit placeholder texts to show that othercode can be written
-// checkWon
+// todorc check that blocks cant be placed outside the active area
 
 window.onbeforeunload = function() {
   return "Data will be lost if you leave the page, are you sure?";
