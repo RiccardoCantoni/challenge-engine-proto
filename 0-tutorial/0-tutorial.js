@@ -81,6 +81,7 @@ instantiateWorldState = () => {
 
   // initial state & actions
   GAME_MANAGER.state = {
+    u: UTIL,
     player: { position: p1, move: (v) => GAME_MANAGER.wrappers.move(v) },
     target: {position: p2}
   }
