@@ -290,7 +290,7 @@ const onReset = () => {
 }
 
 const onSubmit = () => {
-  PAGE_MANAGER.submit('2-SheepDog')
+  PAGE_MANAGER.submit('3-Claw')
 }
 
 const notifyError = (err) => {
